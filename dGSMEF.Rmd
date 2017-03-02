@@ -96,14 +96,14 @@ It seems surprised that the growth rate of HNC47 with Fc is a little higher than
 FBA can be used to examine dynamic processes such as microbial growth in batch cultures by combining FBA with an iterative approach based on a quasi-steady-state assumption (static optimization–based dynamic FBA). 
 
 •	The substrate concentration (Sc) (mmol/L) is determined from the substrate concentration predicted for the previous step (Sco ) or from the initial substrate concentration if it is the first time step:
-$$S_c = S_{co}$$
+$$ S_c = S_{co} $$
 •	The substrate concentration is scaled to define the amount of substrate available per unit of biomass per unit of time (mmol gDW-1h-1):
-$$Substrate available = S_c/(X\delta(t))$$
+$$ Substrate available = \frac{S_c}{(X\Delta(t)} $$
 
 where X is the current cell density and Xo is the cell density from the previous step.
 •	FBA is then used to calculate the substrate uptake ( Su ) and the growth rate (µ).
 •	Concentrations for the next time step are calculated from the standard differential equations:
-$$dX/dt = mu(X) \rightarrow X = X_0\e^mu(delta(t))$$
+$$ fraq{dX}{dt} = \mu(X) \rightarrow X = X_0{\rm e}^\mu\delta(t) $$
 
 ### Fed-batch biomass growth model
 
@@ -111,7 +111,7 @@ In contrast to the batch mode, during the fed-batch mode, one or more nutrients 
 
 Specifically, if S represents the substrate concentration (mmol∙L-1) (except substrates such as glucose fed in the feeding stream), q the specific efflux rate determined by FBA (mmol∙gDCW-1∙h-1), X the biomass concentration (gDCW∙h-1), D the dilution rate (h-1), then we could have the following equation according to mass-balance law:
 
-$$dS/dt = qX - DS$$
+$$ dS/dt = qX - DS $$
 
 ### Induction protein production model
 
@@ -124,7 +124,7 @@ precursor balances and energetic requirements for recombinant protein overproduc
 
 In the constraint-based metabolic flux analysis, a prominent feature is that it is always required to define a reasonable objective function. And biomass objective function that describes the growth requirements of a cell is usually selected. The requirements contain the cell’s chemical composition, i.e., protein, RNA, DNA, lipids, and cofactor content, as well as energy. Concretely, an average E. coli B/r cell growing exponentially at 37°C under aerobic conditions in glucose minimal medium with a doubling time of approximately 40 min has a dry weight of 2.8 × 10−13 g. The dry weight is 55% protein, 20.5% RNA, 3.1% DNA, 9.1% lipids, 3.4% lipopolysaccharides, 2.5% peptidoglycan, 2.5% glycogen, 0.4% polyamines, and 3.5% other metabolites, cofactors, and ions (Neidhardt, 1987). The types and amounts of precursors required to synthesize these macromolecules at a given growth rate could also be determined from the composition of each of the macromolecules: the amino acid composition of proteins, the nucleotide composition of RNA and DNA, the phospholipid composition, and the fatty acid composition from experimental data or primary literatures. However, the macromolecular composition is not the same for cells growing at different rates. Figure 1 shows the macromolecular composition of the cell changes with growth rate. Here, I modified their original fits describing the macromolecular composition such that all fits were linear:
 
-Biomass content of a given molecular species (mmol/gdw) = slope*u + intercept
+$$ Biomass content of a given molecular species (mmol/gdw) = slope\times\mu + intercept $$
  
 
 Figure 1. Variation in macromolecular composition of E. coli with growth rate, and the corresponding linearization between macromolecular composition and growth rate. All data are referred to J. Pramanik, J. D. Keasling. BIOTECHNOLOGY AND BIOENGINEERING, 1997
@@ -143,11 +143,11 @@ Figure 2. Energy requirements for polymerization and processing of macromolecule
 
 In the constraint-based metabolic models, it also includes an ATP hydrolysis reaction (1 ATP + 1 H2O → 1 ADP + 1 Pi + 1 H+), which represents NGAM requirements of the cell to maintain, e.g., turgor pressure. However, under different conditions that the cell faces different pressures, the value for this reaction rate should not be constant. For instance, for recombinant cells, additional expression of recombinant proteins would bring metabolic burden to the cell, which would increase the NGAM requirement of the cell. Therefore, it’s important to take this factor into account in our case. Pirt proposed a theory of constant maintenance energy in 1975, that is:
 
-q = u/YG + m1,
+$$ q = frac{\mu}{Y_G} + m1, $$
 
 where q is the specific rate of utilization of the energy source (glucose uptake rate in the model), u is the specific growth rate, YG is the maximal growth yield and m1 is the constant maintenance energy coefficient, which is independent of the growth rate. Moreover, by putting q=u/Y where Y is the actual growth yield, we could obtain:
 
-1/Y = 1/YG + m1/u
+$$ frac{1}{Y} = frac{1}{Y_G} + frac{m1}{\mu}
 
 By computing the maintenance coefficient m1 for the host before induction and recombinant cell after induction, we are able to know the increased NGAM requirement due to the metabolic burden during the induction phase. Table 1 lists the biomass and glucose time-course data during the MIC-1 expression. Based on the above Pirt’s theory, m1 for the recombinant cell with MIC-1 is 0.2459 g Glc/gDW/h (Figure 3). Additionally, the maximal growth yield YG is inferred to equal to 1/1.6719=0.6 g Glc/gDW. However, we do not have the corresponding data with good quality for the host before induction or the recombinant cell with Fc. I cannot use the similar approach to estimate the maintenance coefficients m1. Here, suppose YG is accurate and constant, for the host under batch phase, we have parameter values of q = 7 mmol Glc/gDW/h, u = 0.69h-1, then the m1 for the host before induction is calculated to be 0.1075 g Glc/gDW/h. That is, from the batch to the induction, NGAM increases 1.29–fold (0.2459/0.1075 = 2.29). 
 
@@ -173,24 +173,24 @@ Based on the expression data and biomass DCW during induction phase, it could be
 Figure . Ratio of Fc to DCW in two feeding cultures: 50% glucose and 25% glucose + 10% YE
 
 Scott M et al. proposed a new proteome resource allocation theory in their impressive Science paper in 2010. That is, considering a four-component proteome consisting of: 
-1) $phi_R$ : class R of mass fraction, containing all the ribosome proteins and their affiliates 
-2) $phi_Q$ : class Q of mass fraction, a fixed sector
-3) $phi_P$ : class P of mass fraction, non-ribosomal-associated but growth-rate dependent (e.g., metabolic proteins)
-4) $phi_U$ : unnecessary protein of mass fraction, e.g., recombinant protein
+1) $Phi_R$ : class R of mass fraction, containing all the ribosome proteins and their affiliates 
+2) $Phi_Q$ : class Q of mass fraction, a fixed sector
+3) $Phi_P$ : class P of mass fraction, non-ribosomal-associated but growth-rate dependent (e.g., metabolic proteins)
+4) $Phi_U$ : unnecessary protein of mass fraction, e.g., recombinant protein
 By definition:
-$$phi_R + phi_Q + phi_P + phi_U  = 1$$
+$$ \Phi_R + \Phi_Q + \Phi_P + \Phi_U  = 1 $$
 
 And meanwhile based on empirical correlations found by the authors:
 
-$$phi_P = rho\lamda/kappa_n
-$$phi_R = rho\(r_0 + lamda/kappa_t)
-$$1 - phi_Q  = rho\𝑟_𝑚𝑎𝑥$$
+$$ \Phi_P = \rho\times\frac{\lamda}{\kappa_n} $$
+$$ \Phi_R = \rho\times\(r_0 + frac{\lamda}{\kappa_t}) $$
+$$ 1 - \Phi_Q  = \rho\𝑟_𝑚𝑎𝑥 $$
 
 Then we could have
 
-$$lamda(phi_U)/lamda(phi_U == 0) = 1- phi_U/phi_C
+$$ frac{\lamda(\Phi_U)}{\lamda(\Phi_U = 0)} = 1 - frac{\Phi_U}{\Phi_C}
 
-where $phi_C = rho\(r_max - r_0) ≈ 0.48 , 𝜆(𝜙𝑈) is the growth rate with 𝜙𝑈 in the proteome, and 𝜆(𝜙𝑈 = 0) is the growth rate without unnecessary protein in the proteome.
+where $\Phi_C = \rho\times(r_max - r_0) ≈ 0.48$ , 𝜆(𝜙𝑈) is the growth rate with 𝜙𝑈 in the proteome, and 𝜆(𝜙𝑈 = 0) is the growth rate without unnecessary protein in the proteome.
 
 According to this theory, the growth reduction induced by heterologous protein expression is a simple consequence of proteome allocations. And more heterologous proteins, less growth rate. Our data of Fc and biomass corroborates this. In addition, considering mass fraction of the proteome in biomass is 55%-68%, then we could deduce theoretical maximal mass fraction of recombinant protein in biomass is 32.64% (Figure 1). 
 

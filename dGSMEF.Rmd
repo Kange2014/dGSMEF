@@ -25,7 +25,10 @@ I'll show how to use this model step by step in the following parts.
 
 The proposed model is composed by six blocks as depicted in the scheme shown in Figure 1. The first block, genome-scale model reconstruction, establishes the foundation of modelling of cellular metabolism. And the second block, model parameters determination experimentally, defines the constraints, such as maximal glucose uptake rate, to the genome-scale model. With this constaint-based genome-scale model, FBA approach has been shown to provide meaningful predictions in many organisms at a particular steady state. However, this static FBA can only identify cellular metabolic fluxes, and cannot provide any information on the metabolite concentrations, as well as on the dynamic characteristics of these metabolic fluxes. Therefore, in a changing enviroment such as fermentaion process, we need to modify FBA, where the flux balance analysis problem is solved along with constraints on the change of metabolite levels at specific time instants. The followed three blocks, covering batch, fed-batch, and induction cultures, calculate the dynamics of external metabolites, biomass and recombinant protein concentrations. Differential Equations are listed in Table 1. We extend FBA, known as  dynamic FBA, to account for this dynamics. The dynamic FBA is implemented with static optimization approach (SOA). First, the simulation time is divided into small periods which are assumed to be in quasi-steady state; Second, for every time step, an FBA problem is solved and the fluxes are integrated over the time period and extracellular concentrations are calculated, accordingly. Furthermore, the flux optimizaiton is achieved by parsimonius FBA (pFBA), which minimize all fluxes within the solution space of the growth optimum, to minimize the requirement for enzyme expression. In particular, in induction protein production block, when the culture reaches the desired biomass concentration ($X_ind$), the FBA problem faces a new challenge, that is, the bi-objective optimization of both maximum growth and recombinant protein synthesis rates. To deal with it, a novel proteome resource allocation theory is applied. According to this theory, the growth reduction induced by heterologous protein expression is a simple consequence of proteome allocations. And more heterologous proteins, less growth rate. The final block, acctually, is one of our model applications to the medium design. By comparing the whole behaviour and interal metabolism, we may obtain some helpful insights to guide us improve the quantity and/or quality of protein expression.
 
-![dGSMEF workflow](dGSMEF_workflow.jpg)
+<div style="text-align: center">
+<img src="dGSMEF_workflow.jpg", width = "80%"/>
+</div>
+
 Figure 1. Model blocks and variables. For interpretation of variables, please refer to Table 1.
 
 Table 1 Ordinary differential equations and variales nomenclature 
@@ -36,7 +39,9 @@ Table 1 Ordinary differential equations and variales nomenclature
 
 The central component of the FBA is a stoichiometric matrix, which is converted from a genome-scale metabolic network model. Figure 2 shows the reconstruction process of this genome-scale model. 
 
-![cobra](cobra.jpg)
+<div style="text-align: center">
+<img src="cobra.jpg", width = "50%"/>
+</div>
 Figure 2. The genome-scale model reconstruction process
 
 ####	2.1.1 *De novo* sequencing and assembly of HNC47 by PacBio *RS II*
@@ -83,11 +88,11 @@ Figure 3. HNC47 maximum aerobic glucose uptake rate, determined from batch exper
 
 The model requires maximum glucose uptake rate specified for metabolic simulations of batch and fed-batch cultures to restrict the metabolic capacity for glucose utilization. It’s defined as the ratio of the growth rate to biomass yield in batch experiments (Figure 3). For aerobic batch cultures, we have determined this value to be 7 mmol/gDW/h for HNC47 and for other strains (Table 3). It seems surprised that the growth rate of HNC47 with Fc is a little higher than HNC47 without Fc plasmid. The reason still remains unclear.
 
-    Table 3. Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)
-| Strain          | Growth Rate (/h) | Glucose uptake rate (mmol/g DW/h) | Biomass yield rate (g DW/g glucose) | Oxygen uptake rate^[2] (mmol/g DW/h) |
-|-----------------:|-------------- --:|-----------------------------:|--------------------------------:|------------------------------:|
+     Table 3. Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)
+| Strain           | Growth Rate (/h) | Glucose uptake rate (mmol/g DW/h) | Biomass yield rate (g DW/g glucose) | Oxygen uptake rate^[2] (mmol/g DW/h) |
+|-----------------:|----------------:|-----------------------------:|--------------------------------:|------------------------------:|
 | HNC41 (PGL-)     | 	0.58      |	7.7	                    |          0.418                      |    11                  |
-| HNC47 (PGL+)     |  0.69	 |  7	                           |          0.547                      |    11                  |
+| HNC47 (PGL+)     |  0.69	   |  7	                           |          0.547                      |    11                  |
 | HNC47 with Fc    |  0.76       |  9.58                             |          0.4413                     |    11.5                |
 []: identified by FBA as the value that would give the correct experimentally determined growth rate when using the core biomass reaction.
 
@@ -139,10 +144,11 @@ $$ \frac{1}{Y} = \frac{1}{Y_G} + \frac{m1}{\mu} $$
 By computing the maintenance coefficient m1 for the host before induction and recombinant cell after induction, we are able to know the increased NGAM requirement due to the metabolic burden during the induction phase. Table 4 lists the biomass and glucose time-course data during the MIC-1 expression. Based on the above Pirt’s theory, m1 for the recombinant cell with MIC-1 is 0.2459 g Glc/gDW/h (Figure 5). To convert m1 to NGAM, the following codes could be run:
 
 Table 4. Biomass and glucose data during the MIC-1 expression
+
 | Time after induction (hr) | DCW (g/L) | Volume (L) | Delta DCW (g) | Delta Glucose (g) | u (h-1) | 1/u (h) |	1/Yx/s |
-|-------:|---------:|----------:|---------:|----------:|---------:|---------:|-----------: |
-| 0	 |  21	    | 0.107    |         |           |          |          |   		|			
-| 1	 |  27	    | 0.11134	| 0.75918|	2.17 |	0.291074 | 3.43555 |	2.858347 |
+|-------:|---------:|----------:|---------:|----------:|---------:|---------:|-----------:|
+| 0	 |  21	    | 0.107     |         |           |          |          |   		|			
+| 1	 |  27	    | 0.11134	| 0.75918 |	2.17 |	0.291074 | 3.43555 |	2.858347 |
 | 2      | 34       | 0.11568   | 0.92694 |	2.17 |	0.268763 | 3.720753 |	2.341036 |
 | 3	 | 39	    | 0.12002	| 0.74766 | 2.17     | 0.174032 | 5.746078 | 2.902389 |
 | 4	 | 42	    | 0.12436	| 0.54234 | 2.17     | 0.10963 | 9.121577 | 4.00118 |

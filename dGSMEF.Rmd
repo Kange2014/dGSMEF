@@ -25,17 +25,17 @@ I'll show how to use this model step by step in the following parts.
 
 The proposed model is composed by six blocks as depicted in the scheme shown in Figure 1. The first two blocks, genome-scale model reconstruction and model parameters determination experimentally block mainly ensure the 
 
-[dGSMEF workflow](dGSMEF_workflow.jpg)
+![dGSMEF workflow](dGSMEF_workflow.jpg)
 Figure 1. Model blocks and variables. For interpretation of variables, please refer to Table 1.
 
 Table 1 Ordinary differential equations to describe external substrates concentrations, biomass and recombinant protein concentrations 
 
-[ODE](ODE.jpg)
+![ODE](ODE.jpg)
 
 ### Construction of a constraint-based genome-scale model
 
 
-[cobra](cobra.jpg)
+![cobra](cobra.jpg)
 Figure 2. The genome-scale model reconstruction process
 
 ####	De novo sequencing and assembly of HNC47 by PacBio RS II

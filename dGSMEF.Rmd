@@ -11,34 +11,35 @@ vignette: >
 
 ## Introduction
 
-Escherichia coli is an important host organism in industry for the production of many biopharmaceutical proteins. Therefore, it is crucial for us to improve the efficiency of fermentations to achieve high product yields. In silico, constraint-based genome-scale modelling with flux balance analysis (FBA) has become a popular method in metabolic engineering for fermentation performance improvement. However, this classic FBA method can only be used to study the static metabolic states of cells. In fermentations, environments are always changing and cell growth and intracellular metabolism are also highly dynamic. This drives us to develop a novel approach, which combines the key advantages of FBA with dynamic simulation of the extracellular environment. The aim of this project is to develop such a dynamic FBA approach able to describe the whole behaviour of fermentation processes. Similar to FBA, the key assumption that must hold for this approach is that pseudo steady-state is maintained for intracellular metabolism.
+Escherichia coli is an important host organism in industry for the production of many biopharmaceutical proteins. Therefore, it is crucial for us to improve the efficiency of fermentations to achieve high product yields. *In silico*, constraint-based genome-scale modelling with flux balance analysis (FBA) has become a popular method in metabolic engineering for fermentation performance improvement. However, this classic FBA method can only be used to study the static metabolic states of cells. In fermentations, environments are always changing and cell growth and intracellular metabolism are also highly dynamic. This drives us to develop a novel approach, which combines the key advantages of FBA with dynamic simulation of the extracellular environment. The aim of this project is to develop such a dynamic FBA approach able to describe the whole behaviour of fermentation processes. Similar to FBA, the key assumption that must hold for this approach is that pseudo steady-state is maintained for intracellular metabolism.
 
 Based on the genomic gene annotations, a genome-scale model which contains all known metabolic stoichiometric reactions for our strain was firstly constructed. And then, this model was analyzed in a dynamic framework, which enables an interaction between the metabolism and changing extracellular environments, to simulate substrate, biomass, and recombinant protein concentrations with time for growth in batch or fed-batch cultures.
 
-Here we present a dynamic model that integrates the metabolic network with the dynamics of cellular metabolites, biomass composition, and recombinant protein synthesis constraint for E. coli fermentation. The model consists of two major parts: (1) a flux-balance based genome-scale model with 1942 metabolites, 2731 reactions and 1331 genes and (2) 393 process variables of interest that describe biomass, metabolites and protein concentration profiles with time. The model incorporates growth-rate dependent biomass composition and energy requirements, maintenance energy theory for the host and recombinant cell, multiple-objective optimization of maximum growth and recombinant protein synthesis, as well as dynamic flux balancing. The parameters of the model were estimated using experimental data. Using the model, we are able to predict the behaviour of our strain producing proteins with many conditions, such as rich medium in batch phase, acetate secretion and re-utilization after depletion of glucose, glucose minimal medium with/without amino acid supplementation, etc. 
+Here we present a dynamic model that integrates the metabolic network with the dynamics of cellular metabolites, biomass composition, and recombinant protein synthesis constraint for *E. coli* fermentation. The model consists of two major parts: (1) a flux-balance based genome-scale model with 1942 metabolites, 2731 reactions and 1331 genes and (2) 393 process variables of interest that describe biomass, metabolites and protein concentration profiles with time. The model incorporates growth-rate dependent biomass composition and energy requirements, maintenance energy theory for the host and recombinant cell, proteome resource allocation model to balance the bi-objective optimization of maximum growth and recombinant protein synthesis, as well as dynamic flux balancing. The parameters of the model were estimated using experimental data. Using the model, we are able to predict the behaviour of our strain producing proteins with many conditions, such as rich medium in batch phase, acetate secretion and re-utilization after depletion of glucose, glucose minimal medium with/without complex medium yeast extract (YE), etc. 
 
-In summary, the presented approach represents a powerful tool for E. coli production process simulation and ultimately optimization. Both intracellular metabolic fluxes and fermentation process could be monitored. Therefore, this dynamic model can be applied to optimize medium and bioprocess for improving the recombinant protein production.
+In summary, the presented approach represents a powerful tool for *E. coli* production process simulation and ultimately optimization. Both intracellular metabolic fluxes and fermentation process could be monitored. Therefore, this dynamic model can be applied to optimize medium and bioprocess for improving the recombinant protein production.
 
 I'll show how to use this model step by step in the following parts.
 
 ## Model workflow
 
-The proposed model is composed by six blocks as depicted in the scheme shown in Figure 1. The first two blocks, genome-scale model reconstruction and model parameters determination experimentally block mainly ensure the 
+The proposed model is composed by six blocks as depicted in the scheme shown in Figure 1. The first block, genome-scale model reconstruction, establishes the foundation of modelling of cellular metabolism. And the second block, model parameters determination experimentally, defines the constraints, such as maximal glucose uptake rate, to the genome-scale model. With this constaint-based genome-scale model, FBA approach has been shown to provide meaningful predictions in many organisms at a particular steady state. However, this static FBA can only identify cellular metabolic fluxes, and cannot provide any information on the metabolite concentrations, as well as on the dynamic characteristics of these metabolic fluxes. Therefore, in a changing enviroment such as fermentaion process, we need to modify FBA, where the flux balance analysis problem is solved along with constraints on the change of metabolite levels at specific time instants. The followed three blocks, covering batch, fed-batch, and induction cultures, calculate the dynamics of external metabolites, biomass and recombinant protein concentrations. Differential Equations are listed in Table 1. We extend FBA, known as  dynamic FBA, to account for this dynamics. The dynamic FBA is implemented with static optimization approach (SOA). First, the simulation time is divided into small periods which are assumed to be in quasi-steady state; Second, for every time step, an FBA problem is solved and the fluxes are integrated over the time period and extracellular concentrations are calculated, accordingly. Furthermore, the flux optimizaiton is achieved by parsimonius FBA (pFBA), which minimize all fluxes within the solution space of the growth optimum, to minimize the requirement for enzyme expression. In particular, in induction protein production block, when the culture reaches the desired biomass concentration ($X_ind$), the FBA problem faces a new challenge, that is, the bi-objective optimization of both maximum growth and recombinant protein synthesis rates. To deal with it, a novel proteome resource allocation theory is applied. According to this theory, the growth reduction induced by heterologous protein expression is a simple consequence of proteome allocations. And more heterologous proteins, less growth rate. The final block, acctually, is one of our model applications to the medium design. By comparing the whole behaviour and interal metabolism, we may obtain some helpful insights to guide us improve the quantity and/or quality of protein expression.
 
 ![dGSMEF workflow](dGSMEF_workflow.jpg)
 Figure 1. Model blocks and variables. For interpretation of variables, please refer to Table 1.
 
-Table 1 Ordinary differential equations to describe external substrates concentrations, biomass and recombinant protein concentrations 
+Table 1 Ordinary differential equations and variales nomenclature 
 
 ![ODE](ODE.jpg)
 
 ### Construction of a constraint-based genome-scale model
 
+The central component of the FBA is a stoichiometric matrix, which is converted from a genome-scale metabolic network model. Figure 2 shows the reconstruction process of this genome-scale model. 
 
 ![cobra](cobra.jpg)
 Figure 2. The genome-scale model reconstruction process
 
-####	De novo sequencing and assembly of HNC47 by PacBio RS II
+####	*De novo* sequencing and assembly of HNC47 by PacBio *RS II*
 
 Single molecule, real-time sequencing by PacBio has become the gold standard for finishing microbial genomes. Thus, we sequenced HNC47 genomic DNA by PacBio RS II of Tianjin Pangu Gene company, with a single library (<20kb). Sequencing statistics data shows it generates 1237Mb data, containing 86228 raw reads (polymerase reads), of which the average length and quality are 14.346kb and 0.84, respectively. After consensus calling, the average length and quality of circular consensus reads (reads of insert) are 8.682kb and 0.87, respectively. The QC-loading report shows that the percentage of ZMWs that are productive and sequencing is more than 50%, demonstrating the well-loading of this sequencing experiment.
  
@@ -49,14 +50,15 @@ But the work was not finished. Dotplots against BL21(DE3) and self both showed t
 Since we also have illumina paird-end sequencing data of HNC47 genomic DNA, this final reference genome could be further improved by using short read mapping, in particular small indels. BWA mapped the illumina paird-end data to HNC47 reference genome, and then Pilon removed 30 remaining indels in this ~4.5M genome despite Quiver calling > 60. A Quiver re-polishing for correction was done, generating the final HNC reference genome with a length of 4,487,375 bp. 
 
 #### Genomic annotation
-The annotation includes the following contents:
-1)	Protein-coding genes and corresponding coding sequence (CDS)
-2)	ribosomal RNA genes (rRNA)
-3)	transfer RNA genes
-4)	non-coding RNA genes
-5)	CRISPR
 
-Prokka combined with other tools is used to annotate this prokaryote genome. All files are deposited in R:\ERC\NNRCC_ERC\ERCPE\Database\HNC47.
+The annotation includes the following contents:
+* 1)	Protein-coding genes and corresponding coding sequence (CDS)
+* 2)	ribosomal RNA genes (rRNA)
+* 3)	transfer RNA genes
+* 4)	non-coding RNA genes
+* 5)	CRISPR
+
+Prokka combined with other tools including Prodigal, Barrnap, Aragorn, Infernal and MINCED is used to annotate this prokaryote genome.  Result files with various formats are deposited in R:\ERC\NNRCC_ERC\ERCPE\Database\HNC47.
 
 #### Reconstruction of genome-scale model
 
@@ -64,145 +66,146 @@ Others’ study has shown that starting from the highly curated content of a clo
 
 (Co-)Orthologs between HNC47, BL21(DE3), B str. REL606, K-12 strain MG1655 and W strain are identified by Reciprocal BLAST (Bidirectional Best Hit) based Proteinortho with default parameters. The GEM is reconstructed based on these ortholog genes. For genes s0001, gltL, fucA, wbbJ, fucP, xapA, ompC, tynA, yedL, rbsD, vsr, lsrD and fliZ, they’re not mapped to a genome annotation of BL21(DE3). So, in the building of our HNC47 GEM, the corresponding reactions are maintained. Considering dadX is cloned into the plasmid to maintain HNC47 strain’s normal growth, dadX is recovered and the reaction is also remained. Table 2 outlines the statistics of GEMs. Likewise, the major difference of new HNC47 GEM is the introduction of ybhE gene insertion, when compared to BL21(DE3). The new adding reaction aided by ybhE gene introduces an important process in the Pentose Phosphate Pathway, which promotes the generation of NADPH, pentoses as well as Ribose 5-phosphate, a precursor for the synthesis of nucleotides. Eventually, HNC47 metabolic model has 1350 genes involved in 2784 reactions with 1973 metabolites, as Table 2 shows. GSM files could be retrieved from R:\ERC\NNRCC_ERC\ERCPE\Database\HNC47\Genome-scale model. SBML and JSON format are provided. And in the R sybil package, it is suggested to use SBML format without fbc.
 
-                       Table 2. The statistics of E.coli GEMs
+                   Table 2. The statistics of E.coli GEMs
 | Component (#) | BL21(DE3) AM946981.2 | B str. REL606 CP000819.1 | HNC47 | HNC41 |
 |--------------:|---------------------:|-------------------------:|------:|------:|
 | Metabolites   |       1945           |       1953               | 1973  |  1942 |
 | Reactions     |       2742           |       2749               | 2784  |  2728 |
-| Genes         |       1337           |       1329               | 1350* |  1330 |
-*One additional reaction is also added to the model, when the induction phase begins. It is the recombinant protein synthesis reaction according to its amino acid sequence. The energy cost of protein synthesis is assumed to be 4.306 mmol ATP/mmol amino acids. 
+| Genes         |       1337           |       1329               | 1350^[1] |  1330 |
+^[1]: One additional reaction is also added to the model, when the induction phase begins. It is the recombinant protein synthesis reaction according to its amino acid sequence. The energy cost of protein synthesis is assumed to be 4.306 mmol ATP/mmol amino acids. 
 
 ### Model parameters determination experimentally
 
 In order to apply the model we first needed to determine strain-specific parameters, in particular glucose uptake rate. The fully specified model was then used to compare predictions with experimental data.
 
-[growth curve](growth_curve.jpg)
-Figure 1. HNC47 maximum aerobic glucose uptake rate, determined from batch experiments as the growth rate (0.69 h-1 HNC47) divided by the biomass yield (0.547g DW/g glucose).
+![growth curve](growth_curve.jpg)
+Figure 3. HNC47 maximum aerobic glucose uptake rate, determined from batch experiments as the growth rate (0.69 h-1 HNC47) divided by the biomass yield (0.547g DW/g glucose).
 
-The model requires maximum glucose uptake rate specified for metabolic simulations of batch and fed-batch cultures to restrict the metabolic capacity for glucose utilization. It’s defined as the ratio of the growth rate to biomass yield in batch experiments (Figure 1). For aerobic batch cultures, we have determined this value to be 7 mmol/gDW/h for HNC47 (Figure 1 and Table 2). 
+The model requires maximum glucose uptake rate specified for metabolic simulations of batch and fed-batch cultures to restrict the metabolic capacity for glucose utilization. It’s defined as the ratio of the growth rate to biomass yield in batch experiments (Figure 3). For aerobic batch cultures, we have determined this value to be 7 mmol/gDW/h for HNC47 and for other strains (Table 3). It seems surprised that the growth rate of HNC47 with Fc is a little higher than HNC47 without Fc plasmid. The reason still remains unclear.
 
-            Table . Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)
-| Strain       | Growth Rate (/h) | Glucose uptake rate (mmol/g DW/h) | Biomass yield rate (g DW/g glucose) | Oxygen uptake rate* (mmol/g DW/h) |
-|--------------:|------------:|----------------------------------:|------------------------------------:|-----------------------:|
-| HNC41 (PGL-)  | 	0.58      |	7.7	                              |          0.418                      |    11                  |
-| HNC47 (PGL+)  |  0.69	      |  7	                              |          0.547                      |    11                  |
-| HNC47 with Fc |  0.76       |  9.58                             |          0.4413                     |    11.5                |
-*: identified by FBA as the value that would give the correct experimentally determined growth rate when using the core biomass reaction.
-
-It seems surprised that the growth rate of HNC47 with Fc is a little higher than HNC47 without Fc plasmid. The reason still remains unclear.
+Table 3. Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)
+| Strain            | Growth Rate (/h) | Glucose uptake rate (mmol/g DW/h) | Biomass yield rate (g DW/g glucose) | Oxygen uptake rate^[2] (mmol/g DW/h) |
+|-----------------:|----------------:|-----------------------------:|--------------------------------:|------------------------------:|
+| HNC41 (PGL-)     | 	0.58      |	7.7	                    |          0.418                      |    11                  |
+| HNC47 (PGL+)     |  0.69	 |  7	                           |          0.547                      |    11                  |
+| HNC47 with Fc    |  0.76       |  9.58                             |          0.4413                     |    11.5                |
+^[2]: identified by FBA as the value that would give the correct experimentally determined growth rate when using the core biomass reaction.
 
 ### Batch biomass growth model
 
-FBA can be used to examine dynamic processes such as microbial growth in batch cultures by combining FBA with an iterative approach based on a quasi-steady-state assumption (static optimization–based dynamic FBA). 
-
-•	The substrate concentration (Sc) (mmol/L) is determined from the substrate concentration predicted for the previous step (Sco ) or from the initial substrate concentration if it is the first time step:
+FBA can be used to examine dynamic processes such as microbial growth in batch cultures by combining FBA with an iterative approach based on a quasi-steady-state assumption (static optimization–based dynamic FBA). The substrate concentration (Sc) (mmol/L) is determined from the substrate concentration predicted for the previous step (Sco ) or from the initial substrate concentration if it is the first time step:
 $$ S_c = S_{co} $$
-•	The substrate concentration is scaled to define the amount of substrate available per unit of biomass per unit of time (mmol gDW-1h-1):
-$$ Substrate available = \frac{S_c}{(X\Delta(t)} $$
-
-where X is the current cell density and Xo is the cell density from the previous step.
-•	FBA is then used to calculate the substrate uptake ( Su ) and the growth rate (µ).
-•	Concentrations for the next time step are calculated from the standard differential equations:
-$$ fraq{dX}{dt} = \mu(X) \rightarrow X = X_0{\rm e}^\mu\delta(t) $$
+The substrate concentration is scaled to define the amount of substrate available per unit of biomass per unit of time (mmol gDW-1h-1):
+$$ Substrate available = \frac{S_c}{X\Delta(t)} $$
+where X is the current cell density and Xo is the cell density from the previous step. FBA is then used to calculate the substrate uptake ( Su ) and the growth rate (µ).Concentrations for the next time step are calculated from the standard differential equations:
+$$ \frac{dX}{dt} = \mu(X) \rightarrow X = X_0{\rm e}^{\mu\Delta(t)} $$
 
 ### Fed-batch biomass growth model
 
 In contrast to the batch mode, during the fed-batch mode, one or more nutrients (substrates) are fed (supplied) to the bioreactor and in which the product(s) remain in the bioreactor until the end of the run. When the initial glucose is consumed out and also the dissolved oxygen consumption is reduced, batch phase ends and glucose feeding will start. Feeding rate is performed according to a predefined exponential feeding profile based on mass balances and substrate uptake, keeping the specific growth rate at a fixed value. 
 
-Specifically, if S represents the substrate concentration (mmol∙L-1) (except substrates such as glucose fed in the feeding stream), q the specific efflux rate determined by FBA (mmol∙gDCW-1∙h-1), X the biomass concentration (gDCW∙h-1), D the dilution rate (h-1), then we could have the following equation according to mass-balance law:
+Specifically, if S represents the substrate concentration (mmol/L) (except substrates such as glucose fed in the feeding stream), q the specific efflux rate determined by FBA (mmol/gDCW/h), X the biomass concentration (gDCW/h), D the dilution rate (h-1), then we could have the following equation according to mass-balance law:
 
 $$ dS/dt = qX - DS $$
 
 ### Induction protein production model
 
-precursor balances and energetic requirements for recombinant protein overproduction should be added into the model:
+Induction phase starts when the IPTG pulse addition is done, and then, recombinant protein starts to express. We first add this recombiant protein expression reaction into our genome-scale model, according to precursor balances and energetic requirements:
+
 (6) ala__L[c] + (6) arg__L[c] + (11) asn__L[c] + (9) asp__L[c] + (6) cys__L[c] + (11) gln__L[c] + (17) glu__L[c] + (11) gly[c] + (5) his__L[c] + (4) ile__L[c] + (17) leu__L[c] + (17) lys__L[c] + (3) met__L[c] + (9) phe__L[c] + (19) pro__L[c] + (24) ser__L[c] + (14) thr__L[c] + (8) tyr__L[c] + (23) val__L[c] + (4) trp__L[c] + (964.544) atp[c] --> (1) Protein[c] + (964.544) adp[c] + (964.544) pi[c]
-
-
 
 ####	Growth-rate dependent biomass composition
 
-In the constraint-based metabolic flux analysis, a prominent feature is that it is always required to define a reasonable objective function. And biomass objective function that describes the growth requirements of a cell is usually selected. The requirements contain the cell’s chemical composition, i.e., protein, RNA, DNA, lipids, and cofactor content, as well as energy. Concretely, an average E. coli B/r cell growing exponentially at 37°C under aerobic conditions in glucose minimal medium with a doubling time of approximately 40 min has a dry weight of 2.8 × 10−13 g. The dry weight is 55% protein, 20.5% RNA, 3.1% DNA, 9.1% lipids, 3.4% lipopolysaccharides, 2.5% peptidoglycan, 2.5% glycogen, 0.4% polyamines, and 3.5% other metabolites, cofactors, and ions (Neidhardt, 1987). The types and amounts of precursors required to synthesize these macromolecules at a given growth rate could also be determined from the composition of each of the macromolecules: the amino acid composition of proteins, the nucleotide composition of RNA and DNA, the phospholipid composition, and the fatty acid composition from experimental data or primary literatures. However, the macromolecular composition is not the same for cells growing at different rates. Figure 1 shows the macromolecular composition of the cell changes with growth rate. Here, I modified their original fits describing the macromolecular composition such that all fits were linear:
+In the constraint-based metabolic flux analysis, a prominent feature is that it is always required to define a reasonable objective function. And biomass objective function that describes the growth requirements of a cell is usually selected, e.g., in our batch and fed-batch cultures. The requirements contain the cell's chemical composition, i.e., protein, RNA, DNA, lipids, and cofactor content, as well as energy. Concretely, an average E. coli B/r cell growing exponentially at 37°C under aerobic conditions in glucose minimal medium with a doubling time of approximately 40 min has a dry weight of 2.8 × 10−13 g. The dry weight is 55% protein, 20.5% RNA, 3.1% DNA, 9.1% lipids, 3.4% lipopolysaccharides, 2.5% peptidoglycan, 2.5% glycogen, 0.4% polyamines, and 3.5% other metabolites, cofactors, and ions (Neidhardt, 1987). The types and amounts of precursors required to synthesize these macromolecules at a given growth rate could also be determined from the composition of each of the macromolecules: the amino acid composition of proteins, the nucleotide composition of RNA and DNA, the phospholipid composition, and the fatty acid composition from experimental data or primary literatures. However, the macromolecular composition is not the same for cells growing at different rates. Figure 4 shows the macromolecular composition of the cell changes with growth rate. Here, I modified their original fits describing the macromolecular composition such that all fits were linear:
 
 $$ Biomass content of a given molecular species (mmol/gdw) = slope\times\mu + intercept $$
- 
 
-Figure 1. Variation in macromolecular composition of E. coli with growth rate, and the corresponding linearization between macromolecular composition and growth rate. All data are referred to J. Pramanik, J. D. Keasling. BIOTECHNOLOGY AND BIOENGINEERING, 1997
+![biomass_composition](biomass_composition.jpg)
+Figure 4. Variation in macromolecular composition of E. coli with growth rate, and the corresponding linearization between macromolecular composition and growth rate. All data are referred to J. Pramanik, J. D. Keasling. BIOTECHNOLOGY AND BIOENGINEERING, 1997
 In practice, when calculating the macromolecular content of the cell, the average u (growth rate) over the previous 2h was calculated first before computing the resulting biomass composition. In addition, the amino acid composition of proteins, the nucleotide composition of RNA and DNA remain the same all the time.
-
 
 ####	Growth associated ATP maintenance (GAM)
 
-The GAM reaction accounts for the energy (in the form of ATP) necessary to replicate a cell, e.g., for macromolecular synthesis (e.g., proteins, DNA and RNA). When experimental data is not available, the GAM can be estimated by determining the energy required for macromolecular synthesis. Therefore, the total amount of macromolecule (protein, DNA and RNA) is determined from databases or other resources. Figure 2 list the amount of phosphate bonds necessary to synthesize a macromolecule, which is then multiplied with the total amount of the macromolecule. These phosphate bonds are accounted for by adding ATP hydrolysis to the biomass reaction (x ATP + x H2O → x ADP + x Pi + x H+, where x is the number of required phosphate bonds). Note that this estimate will be too low, as other growth-associated cellular processes also require ATP. As the macromolecular composition of the cell changes with growth rate, so must the energy requirements to synthesize these macromolecules, which were correlated with the macromolecular needs. Because protein is one of the most energetically expensive macromolecules and because the relative amount of protein decreases with increasing growth rate, the total energy expended by the cell (per g DW) actually decreases with growth rate.
-
-
- 
-Figure 2. Energy requirements for polymerization and processing of macromolecules
+The GAM reaction accounts for the energy (in the form of ATP) necessary to replicate a cell, e.g., for macromolecular synthesis (e.g., proteins, DNA and RNA). When experimental data is not available, the GAM can be estimated by determining the energy required for macromolecular synthesis. Therefore, the total amount of macromolecule (protein, DNA and RNA) is determined from databases or other resources. For example, average 4.306, 0.4 and 1.372 of phosphate bonds are necessary to synthesize a protein, RNA and DNA molecule, respectively. These phosphate bonds are accounted for by adding ATP hydrolysis to the biomass reaction ($x ATP + x H2O \to x ADP + x Pi + x H+$, where x is the number of required phosphate bonds). Note that this estimate will be too low, as other growth-associated cellular processes also require ATP. As the macromolecular composition of the cell changes with growth rate, so must the energy requirements to synthesize these macromolecules, which were correlated with the macromolecular needs. Because protein is one of the most energetically expensive macromolecules and because the relative amount of protein decreases with increasing growth rate, the total energy expended by the cell (per g DW) actually decreases with growth rate.
 
 ####	Non-growth associated ATP maintenance (NGAM)
 
-In the constraint-based metabolic models, it also includes an ATP hydrolysis reaction (1 ATP + 1 H2O → 1 ADP + 1 Pi + 1 H+), which represents NGAM requirements of the cell to maintain, e.g., turgor pressure. However, under different conditions that the cell faces different pressures, the value for this reaction rate should not be constant. For instance, for recombinant cells, additional expression of recombinant proteins would bring metabolic burden to the cell, which would increase the NGAM requirement of the cell. Therefore, it’s important to take this factor into account in our case. Pirt proposed a theory of constant maintenance energy in 1975, that is:
+In the constraint-based metabolic models, it also includes an ATP hydrolysis reaction ($1 ATP + 1 H2O \to 1 ADP + 1 Pi + 1 H+$), which represents NGAM requirements of the cell to maintain, e.g., turgor pressure. However, under different conditions that the cell faces different pressures, the value for this reaction rate should not be constant. For instance, for recombinant cells, additional expression of recombinant proteins would bring metabolic burden to the cell, which would increase the NGAM requirement of the cell. Therefore, it’s important to take this factor into account in our case. Pirt proposed a theory of constant maintenance energy in 1975, that is:
+$$ q = \frac{\mu}{Y_G} + m1, $$
+where q is the specific rate of utilization of the energy source (glucose uptake rate in the model), $\mu$ is the specific growth rate, $Y_G$ is the maximal growth yield and m1 is the constant maintenance energy coefficient, which is independent of the growth rate. Moreover, by putting $q = \frac{\mu}{Y}$ where Y is the actual growth yield, we could obtain:
 
-$$ q = frac{\mu}{Y_G} + m1, $$
+$$ \frac{1}{Y} = \frac{1}{Y_G} + \frac{m1}{\mu} $$
 
-where q is the specific rate of utilization of the energy source (glucose uptake rate in the model), u is the specific growth rate, YG is the maximal growth yield and m1 is the constant maintenance energy coefficient, which is independent of the growth rate. Moreover, by putting q=u/Y where Y is the actual growth yield, we could obtain:
+By computing the maintenance coefficient m1 for the host before induction and recombinant cell after induction, we are able to know the increased NGAM requirement due to the metabolic burden during the induction phase. Table 4 lists the biomass and glucose time-course data during the MIC-1 expression. Based on the above Pirt’s theory, m1 for the recombinant cell with MIC-1 is 0.2459 g Glc/gDW/h (Figure 5). To convert m1 to NGAM, the following codes could be run:
 
-$$ frac{1}{Y} = frac{1}{Y_G} + frac{m1}{\mu}
-
-By computing the maintenance coefficient m1 for the host before induction and recombinant cell after induction, we are able to know the increased NGAM requirement due to the metabolic burden during the induction phase. Table 1 lists the biomass and glucose time-course data during the MIC-1 expression. Based on the above Pirt’s theory, m1 for the recombinant cell with MIC-1 is 0.2459 g Glc/gDW/h (Figure 3). Additionally, the maximal growth yield YG is inferred to equal to 1/1.6719=0.6 g Glc/gDW. However, we do not have the corresponding data with good quality for the host before induction or the recombinant cell with Fc. I cannot use the similar approach to estimate the maintenance coefficients m1. Here, suppose YG is accurate and constant, for the host under batch phase, we have parameter values of q = 7 mmol Glc/gDW/h, u = 0.69h-1, then the m1 for the host before induction is calculated to be 0.1075 g Glc/gDW/h. That is, from the batch to the induction, NGAM increases 1.29–fold (0.2459/0.1075 = 2.29). 
-
-And meanwhile, this m1 is supposed not to include the energy cost of recombinant protein synthesis, because u actually represents the overall characteristics of the cell with recombinant protein expression (without recombinant expression, it’s foreseeable to observe a larger u). Obviously, the metabolic burden caused by MIC-1 is much larger than that by Fc.
-
-Table 1. Biomass and glucose data during the MIC-1 expression
-Time after induction (hr)	DCW (g/L)	Volume (L)	Delta DCW (g)	Delta Glucose (g)	u (h-1)	1/u (h)	1/Yx/s
-0	21	0.107					
-1	27	0.11134	0.75918	2.17	0.291074	3.43555	2.858347
-2	34	0.11568	0.92694	2.17	0.268763	3.720753	2.341036
-3	39	0.12002	0.74766	2.17	0.174032	5.746078	2.902389
-4	42	0.12436	0.54234	2.17	0.10963	9.121577	4.00118
+Table 4. Biomass and glucose data during the MIC-1 expression
+| Time after induction (hr) |	DCW (g/L)	| Volume (L) |	Delta DCW (g) |	Delta Glucose (g)	| u (h-1)	| 1/u (h)	1/Yx/s |
+|-------:|---------:|--------:|--------:|----------:|---------:|---------:|
+| 0	 |  21	    |0.107    					
+| 1	 |  27	    |0.11134	| 0.75918|	2.17|	0.291074 | 	3.43555|	2.858347|
+| 2      |	34|	0.11568|	0.92694|	2.17|	0.268763|	3.720753|	2.341036|
+|3	|39	|0.12002	|0.74766	|2.17	|0.174032	|5.746078	|2.902389|
+|4	|42	|0.12436	|0.54234	|2.17	|0.10963	|9.121577	|4.00118|
 
  
+![NAGM](NGAM.jpg)
+Figure 5. Maintenance coefficient for the recombinant E. coli growing on glucose as the limiting nutrient
 
-Figure 3. Maintenance coefficient for the recombinant E. coli growing on glucose as the limiting nutrient
+```{r}
+# Convert m1 to non-growth associated maintenance (NGAM) energy
+library(sybil)
+library(sybilSBML)
+library(glpkAPI)
+model = readSBMLmod("../data/HNC47_without_fbc.xml")
+lowbnd(model)[react_id(model) == 'EX_glc__D(e)'] = - 0.2459/180.16*1000 ## -1.364898 mmol Glc/gDW/h
+model = changeObjFunc(model,c('BIOMASS_Ec_iJO1366_core_53p95M', ‘ATPM'),c(0,1))
+sol = sybil::optimizeProb(model,algorithm="fba",retOptSol=TRUE);
+u_max = lp_obj(sol);
+u_max
+
+# reset the model
+lowbnd(model)[react_id(model) == 'EX_glc__D(e)'] = - 20
+model = changeObjFunc(model,c('BIOMASS_Ec_iJO1366_core_53p95M', ‘ATPM'),c(1,0))
+```
+It outputs 32.075 mmol ATP/gDW/h, which is NGAM with MIC-1 case.
+
+Accordingly, for Fc under 50% glucose and 25% glucose + 10% YE feeding conditions, m1 and NGAM are 0.0806 g Glc/gDW/h and 10.51 mmol ATP/gDW/h, 0.0486 g Glc/gDW/h and 6.34 mmol ATP/gDW/h, respectively. And meanwhile, this m1 is supposed not to include the energy cost of recombinant protein synthesis, because $\mu$ actually represents the overall characteristics of the cell with recombinant protein expression (without recombinant expression, it's foreseeable to observe a larger $\mu$). Obviously, the metabolic burden caused by MIC-1 is much larger than that by Fc.
 
 #### A new proteome allocation model to balance resources distribution between biomass and recombinant protein
 
-Based on the expression data and biomass DCW during induction phase, it could be found that as time goes, before 15h, more and more resources are allocated to Fc production in both 50%glc and 25%glc+10%YE conditions, and compared to 50%glc, with 10%YE complement, more resources are allocated to Fc production (Figure 1). This inspires me to apply a new model to deal with the resources distribution between biomass and recombinant protein. 
+Based on the expression data and biomass DCW during induction phase, it could be found that as time goes, before 15h, more and more resources are allocated to Fc production in both 50%glc and 25%glc+10%YE conditions, and compared to 50%glc, with 10%YE complement, more resources are allocated to Fc production (Figure 6). This inspires me to apply a new model to deal with the resources distribution between biomass and recombinant protein. 
 
-[Proteome resource allocation](Proteome resource allocation.jpg)
-Figure . Ratio of Fc to DCW in two feeding cultures: 50% glucose and 25% glucose + 10% YE
+![Proteome resource allocation](Proteome resource allocation.jpg)
+Figure 6. Ratio of Fc to DCW in two feeding cultures: 50% glucose and 25% glucose + 10% YE
 
 Scott M et al. proposed a new proteome resource allocation theory in their impressive Science paper in 2010. That is, considering a four-component proteome consisting of: 
-1) $Phi_R$ : class R of mass fraction, containing all the ribosome proteins and their affiliates 
-2) $Phi_Q$ : class Q of mass fraction, a fixed sector
-3) $Phi_P$ : class P of mass fraction, non-ribosomal-associated but growth-rate dependent (e.g., metabolic proteins)
-4) $Phi_U$ : unnecessary protein of mass fraction, e.g., recombinant protein
+* 1) $\Phi_R$ : class R of mass fraction, containing all the ribosome proteins and their affiliates 
+* 2) $\Phi_Q$ : class Q of mass fraction, a fixed sector
+* 3) $\Phi_P$ : class P of mass fraction, non-ribosomal-associated but growth-rate dependent (e.g., metabolic proteins)
+* 4) $\Phi_U$ : unnecessary protein of mass fraction, e.g., recombinant protein
 By definition:
 $$ \Phi_R + \Phi_Q + \Phi_P + \Phi_U  = 1 $$
 
 And meanwhile based on empirical correlations found by the authors:
 
-$$ \Phi_P = \rho\times\frac{\lamda}{\kappa_n} $$
-$$ \Phi_R = \rho\times\(r_0 + frac{\lamda}{\kappa_t}) $$
-$$ 1 - \Phi_Q  = \rho\𝑟_𝑚𝑎𝑥 $$
+$$ \Phi_P = \rho\times\frac{\lambda}{\kappa_n} $$
+$$ \Phi_R = \rho\times(r_0 + \frac{\lambda}{\kappa_t}) $$
+$$ 1 - \Phi_Q  = \rho\times𝑟_{𝑚𝑎𝑥} $$
 
-Then we could have
+we could have
 
-$$ frac{\lamda(\Phi_U)}{\lamda(\Phi_U = 0)} = 1 - frac{\Phi_U}{\Phi_C}
+$$ frac{\lamda(\Phi_U)}{\lamda(\Phi_U = 0)} = 1 - frac{\Phi_U}{\Phi_C} $$
 
-where $\Phi_C = \rho\times(r_max - r_0) ≈ 0.48$ , 𝜆(𝜙𝑈) is the growth rate with 𝜙𝑈 in the proteome, and 𝜆(𝜙𝑈 = 0) is the growth rate without unnecessary protein in the proteome.
+where $\Phi_C = \rho\times(r_{max} - r_0) \approx 0.48$ , $\lambda(\Phi_U)$ is the growth rate with $\Phi_U$ in the proteome, and $\lambda(\Phi_U = 0) is the growth rate without unnecessary protein in the proteome.
 
-According to this theory, the growth reduction induced by heterologous protein expression is a simple consequence of proteome allocations. And more heterologous proteins, less growth rate. Our data of Fc and biomass corroborates this. In addition, considering mass fraction of the proteome in biomass is 55%-68%, then we could deduce theoretical maximal mass fraction of recombinant protein in biomass is 32.64% (Figure 1). 
+According to this theory, the growth reduction induced by heterologous protein expression is a simple consequence of proteome allocations. And more heterologous proteins, less growth rate. Our data of Fc and biomass corroborates this. In addition, considering mass fraction of the proteome in biomass is 55%-68%, then we could deduce theoretical maximal mass fraction of recombinant protein in biomass is 32.64% (Figure 6). 
 
-Rather than original recombinant constraints parameters to adjust the resources allocation between cell’s objective to increase biomass and our goal to express protein, this new theory seems simpler and clearer. Here, before applying it to our bioprocess modelling, there still remains one issue to be addressed. In the beginning of induction, 𝜙𝑈=0, so 𝜆(𝜙𝑈)=𝜆(𝜙𝑈=0), all resources would be allocated to the biomass growth, 𝜙𝑈 ≡ 0. So, we have to force the cell to invest proportional resources to the recombinant protein synthesis. This proportion would determine how fast the recombinant protein is synthesized in the initial time. In Fc case with 50%glc and 25%glc + 10%YE conditions, proportions are 0.2 and 0.3, respectively, which could result in a very good agreement.
+Rather than original recombinant constraints parameters to adjust the resources allocation between cell's objective to increase biomass and our goal to express protein, this new theory seems simpler and clearer. Here, before applying it to our bioprocess modelling, there still remains one issue to be addressed. In the beginning of induction, $\Phi_U = 0$, so $\lambda(\Phi_U) = \lambda(\pPhi_U = 0)$, all resources would be allocated to the biomass growth, $\Phi_U \equiv 0$. So, we have to force the cell to invest proportional resources to the recombinant protein synthesis. This proportion would determine how fast the recombinant protein is synthesized in the initial time. In Fc case with 50%glc and 25%glc + 10%YE conditions, proportions are 0.2 and 0.3, respectively, which could result in a very good agreement.
 
 ## Apply the model to defined and complex medium
-```{r}
-library(sybil)
-library(sybilSBML)
-library(glpkAPI)
+
 library(deSolve)
-model = readSBMLmod("Data\\HNC47_without_fbc.xml");
+
 lowbnd(model)[react_id(model) == 'EX_glc__D(e)'] = -9.58; ## for HNC47 with Fc
 lowbnd(model)[react_id(model) == 'EX_o2(e)']=-11.5; # for HNC47 with Fc
 
@@ -245,6 +248,7 @@ Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initCo
 				feedRate_ind = 2.8,
 				timeStep=0.25,nSteps=180,fld=TRUE);
 
+```{r,fig.height = 10, fig.width = 10}
 ## compare predictions with experimental results during induction phase
 locs <- Ec_df2@biomassVec >= 31.63
 ind_time = Ec_df2@timeVec[locs][1]

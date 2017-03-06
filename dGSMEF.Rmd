@@ -33,7 +33,7 @@ The proposed model is composed by six blocks as depicted in the scheme shown in 
 <br />
 <center>Table 1 Ordinary differential equations and variales nomenclature</center>
 <div style="text-align: center">
-<img src="ODE.jpg", width = "50%"/>
+<img src="ODE.jpg", width = "70%"/>
 </div>
 
 ### 2.1 Construction of a constraint-based genome-scale model
@@ -58,11 +58,11 @@ Since we also have illumina paird-end sequencing data of HNC47 genomic DNA, this
 #### 2.1.2 Genomic annotation
 
 The annotation includes the following contents:
-* 1) Protein-coding genes and corresponding coding sequence (CDS)
-* 2) ribosomal RNA genes (rRNA)
-* 3) transfer RNA genes
-* 4) non-coding RNA genes
-* 5) CRISPR
+    1) Protein-coding genes and corresponding coding sequence (CDS)
+    2) ribosomal RNA genes (rRNA)
+    3) transfer RNA genes
+    4) non-coding RNA genes
+    5) CRISPR
 
 Prokka combined with other tools including Prodigal, Barrnap, Aragorn, Infernal and MINCED is used to annotate this prokaryote genome.  Result files with various formats are deposited in "R:\\ERC\\NNRCC_ERC\\ERCPE\\Database\\HNC47".
 
@@ -120,11 +120,11 @@ $$ dS/dt = qX - DS $$
 
 Induction phase starts when the IPTG pulse addition is done, and then, recombinant protein starts to express. We first add this recombiant protein expression reaction into our genome-scale model, according to precursor balances and energetic requirements:
 
-*(6) ala__L[c] + (6) arg__L[c] + (11) asn__L[c] + (9) asp__L[c] + (6) cys__L[c] + (11) gln__L[c] + (17) glu__L[c] + (11) gly[c] + (5) his__L[c] + (4) ile__L[c] + (17) leu__L[c] + (17) lys__L[c] + (3) met__L[c] + (9) phe__L[c] + (19) pro__L[c] + (24) ser__L[c] + (14) thr__L[c] + (8) tyr__L[c] + (23) val__L[c] + (4) trp__L[c] + (964.544) atp[c] --> (1) Protein[c] + (964.544) adp[c] + (964.544) pi[c]*
+(6) ala__L[c] + (6) arg__L[c] + (11) asn__L[c] + (9) asp__L[c] + (6) cys__L[c] + (11) gln__L[c] + (17) glu__L[c] + (11) gly[c] + (5) his__L[c] + (4) ile__L[c] + (17) leu__L[c] + (17) lys__L[c] + (3) met__L[c] + (9) phe__L[c] + (19) pro__L[c] + (24) ser__L[c] + (14) thr__L[c] + (8) tyr__L[c] + (23) val__L[c] + (4) trp__L[c] + (964.544) atp[c] --> (1) Protein[c] + (964.544) adp[c] + (964.544) pi[c]
 
 ####	2.5.1 Growth-rate dependent biomass composition
 
-In the constraint-based metabolic flux analysis, a prominent feature is that it is always required to define a reasonable objective function. And biomass objective function that describes the growth requirements of a cell is usually selected, e.g., in our batch and fed-batch cultures. The requirements contain the cell's chemical composition, i.e., protein, RNA, DNA, lipids, and cofactor content, as well as energy. Concretely, an average E. coli B/r cell growing exponentially at 37°C under aerobic conditions in glucose minimal medium with a doubling time of approximately 40 min has a dry weight of 2.8 × 10−13 g. The dry weight is 55% protein, 20.5% RNA, 3.1% DNA, 9.1% lipids, 3.4% lipopolysaccharides, 2.5% peptidoglycan, 2.5% glycogen, 0.4% polyamines, and 3.5% other metabolites, cofactors, and ions (Neidhardt, 1987). The types and amounts of precursors required to synthesize these macromolecules at a given growth rate could also be determined from the composition of each of the macromolecules: the amino acid composition of proteins, the nucleotide composition of RNA and DNA, the phospholipid composition, and the fatty acid composition from experimental data or primary literatures. However, the macromolecular composition is not the same for cells growing at different rates. Figure 4 shows the macromolecular composition of the cell changes with growth rate. Here, I modified their original fits describing the macromolecular composition such that all fits were linear:
+In the constraint-based metabolic flux analysis, a prominent feature is that it is always required to define a reasonable objective function. And biomass objective function that describes the growth requirements of a cell is usually selected, e.g., in our batch and fed-batch cultures. The requirements contain the cell's chemical composition, i.e., protein, RNA, DNA, lipids, and cofactor content, as well as energy. Concretely, an average E. coli B/r cell growing exponentially at 37 C under aerobic conditions in glucose minimal medium with a doubling time of approximately 40 min has a dry weight of $2.8 \times 10^{-13}$ g. The dry weight is 55% protein, 20.5% RNA, 3.1% DNA, 9.1% lipids, 3.4% lipopolysaccharides, 2.5% peptidoglycan, 2.5% glycogen, 0.4% polyamines, and 3.5% other metabolites, cofactors, and ions (Neidhardt, 1987). The types and amounts of precursors required to synthesize these macromolecules at a given growth rate could also be determined from the composition of each of the macromolecules: the amino acid composition of proteins, the nucleotide composition of RNA and DNA, the phospholipid composition, and the fatty acid composition from experimental data or primary literatures. However, the macromolecular composition is not the same for cells growing at different rates. Figure 4 shows the macromolecular composition of the cell changes with growth rate. Here, I modified their original fits describing the macromolecular composition such that all fits were linear:
 
 $$ Biomass \; content \; of \; a \; given \; molecular \; species \; (mmol/gdw) = slope\times\mu + intercept $$
 
@@ -192,10 +192,10 @@ Based on the expression data and biomass DCW during induction phase, it could be
 
 
 Scott M et al. proposed a new proteome resource allocation theory in their impressive Science paper in 2010. That is, considering a four-component proteome consisting of: 
-* 1) $\Phi_R$ : class R of mass fraction, containing all the ribosome proteins and their affiliates 
-* 2) $\Phi_Q$ : class Q of mass fraction, a fixed sector
-* 3) $\Phi_P$ : class P of mass fraction, non-ribosomal-associated but growth-rate dependent (e.g., metabolic proteins)
-* 4) $\Phi_U$ : unnecessary protein of mass fraction, e.g., recombinant protein
+    1) $\Phi_R$ : class R of mass fraction, containing all the ribosome proteins and their affiliates 
+    2) $\Phi_Q$ : class Q of mass fraction, a fixed sector
+    3) $\Phi_P$ : class P of mass fraction, non-ribosomal-associated but growth-rate dependent (e.g., metabolic proteins)
+    4) $\Phi_U$ : unnecessary protein of mass fraction, e.g., recombinant protein
 
 By definition:
 $$ \Phi_R + \Phi_Q + \Phi_P + \Phi_U  = 1 $$
@@ -216,7 +216,7 @@ According to this theory, the growth reduction induced by heterologous protein e
 
 Rather than original recombinant constraints parameters to adjust the resources allocation between cell's objective to increase biomass and our goal to express protein, this new theory seems simpler and clearer. Here, before applying it to our bioprocess modelling, there still remains one issue to be addressed. In the beginning of induction, $\Phi_U = 0$, so $\lambda(\Phi_U) = \lambda(\Phi_U = 0)$, all resources would be allocated to the biomass growth, $\Phi_U \equiv 0$. So, we have to force the cell to invest proportional resources to the recombinant protein synthesis. This proportion would determine how fast the recombinant protein is synthesized in the initial time. In Fc case with 50%glc and 25%glc + 10%YE conditions, proportions are 0.2 and 0.3, respectively, which could result in a very good agreement.
 
-## 2.6 Apply the model to defined and complex medium
+### 2.6 Apply the model to defined and complex medium
 
 ```{r}
 library(deSolve)
@@ -342,9 +342,9 @@ In E. coli, both methylation and acetylation can occur on recombinant proteins. 
 	
 For the latter, acetylation, acetyl-coenzyme A (acetyl-CoA) is the acetyl donor for all acetylation modifications. There are two kinds of acetylation modifications:
 
-* N$\alpha$-acetylation: N-terminal acetyltransferases perform Nα-acetylation on the α-amino group of the first amino acid residue of nascent polypeptides. As a common co-translational modification, Nα-acetylation controls protein synthesis, stability and localization of the vast majority of eukaryotic proteins and is an irreversible reaction. RimI, Riml and RimJ of E. coli are reported to be related to this kind of modification.
+* N$\alpha$-acetylation: N-terminal acetyltransferases perform N$\alpha$-acetylation on the $\alpha$-amino group of the first amino acid residue of nascent polypeptides. As a common co-translational modification, Nα-acetylation controls protein synthesis, stability and localization of the vast majority of eukaryotic proteins and is an irreversible reaction. RimI, Riml and RimJ of E. coli are reported to be related to this kind of modification.
 
-* N$\epsilon$-acetylation: both dynamic and reversible. By contrast, post-translational acetylation catalyses site-specific Nε-acetylation of the ε-amino group of lysine residues, which is a reversible reaction. The reversibility of Nε- acetylation makes this post-translational modification especially favourable in the regulation of proteins in response to metabolic changes. Two mechanisms have been identified:  one is enzymatic, dependent on an acetyltransferase and acetyl-coenzyme A; the other is non-enzymatic and depends on the reactivity of acetyl phosphate. In Escherichia coli, YfiQ (also known as Pka, Pla and PatZ) is the only known KAT (lysine acetyltransferase), whereas the NAD+-dependent sirtuin CobB appears to be the sole or predominant KDAC (lysine deacetylase).
+* N$\epsilon$-acetylation: both dynamic and reversible. By contrast, post-translational acetylation catalyses site-specific Nε-acetylation of the ε-amino group of lysine residues, which is a reversible reaction. The reversibility of N$\epsilon$-acetylation makes this post-translational modification especially favourable in the regulation of proteins in response to metabolic changes. Two mechanisms have been identified:  one is enzymatic, dependent on an acetyltransferase and acetyl-coenzyme A; the other is non-enzymatic and depends on the reactivity of acetyl phosphate. In Escherichia coli, YfiQ (also known as Pka, Pla and PatZ) is the only known KAT (lysine acetyltransferase), whereas the NAD+-dependent sirtuin CobB appears to be the sole or predominant KDAC (lysine deacetylase).
 
 Metabolic flux analysis could provide some interesting insights to these two kinds of PTMs in E.coli. By summing all producing reaction fluxes for these relevant metabolites, the sum flux for each metabolite could be estimated. Table 1 shows the flux ratio of SAM:SAH with 25%glc+10%YE conditions undergoes 12.4 at phase 1 to 16.6 at phase 2, and finally to 18 at phase 3, while with 50%glc the corresponding values are 11.9, 14.4 and 17.9, respectively. It seems that with 25%glc+10%YE, relatively more SAM and less SAH are synthesized. High SAM:SAH ratio apparently indicates high methylation rate. Meanwhile, low levels of homocysteine are also observed with 25%glc+10%YE. Demethylation by a-ketoglutarate, in contrast, is less favored due to low turnover rates of a-ketoglutarate (Figure 4). Consequently, it sounds plausible to observe a relative high methylation status with YE supplement because both methylation and demethylation environments incline to it.
 	

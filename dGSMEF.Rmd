@@ -27,14 +27,13 @@ The proposed model is composed by six blocks as depicted in the scheme shown in 
 
 <div style="text-align: center">
 <img src="dGSMEF_workflow.jpg", width = "100%"/>
+<center>Figure 1. Model blocks and variables. For interpretation of variables, please refer to Table 1</center>
 </div>
 
-Figure 1. Model blocks and variables. For interpretation of variables, please refer to Table 1.  
 
+<center>Table 1 Ordinary differential equations and variales nomenclature</center>
 
-Table 1 Ordinary differential equations and variales nomenclature 
-
-![ODE](ODE.jpg)
+![](ODE.jpg)
 
 ### 2.1 Construction of a constraint-based genome-scale model
 
@@ -42,8 +41,8 @@ The central component of the FBA is a stoichiometric matrix, which is converted 
 
 <div style="text-align: center">
 <img src="cobra.jpg", width = "50%"/>
+<center>Figure 2. The genome-scale model reconstruction process</center>
 </div>
-Figure 2. The genome-scale model reconstruction process
 
 ####	2.1.1 *De novo* sequencing and assembly of HNC47 by PacBio *RS II*
 
@@ -64,7 +63,7 @@ The annotation includes the following contents:
     * 4) non-coding RNA genes
     * 5) CRISPR
 
-Prokka combined with other tools including Prodigal, Barrnap, Aragorn, Infernal and MINCED is used to annotate this prokaryote genome.  Result files with various formats are deposited in R:\ERC\NNRCC_ERC\ERCPE\Database\HNC47.
+Prokka combined with other tools including Prodigal, Barrnap, Aragorn, Infernal and MINCED is used to annotate this prokaryote genome.  Result files with various formats are deposited in "R:\\ERC\\NNRCC_ERC\\ERCPE\\Database\\HNC47".
 
 #### 2.1.3 Reconstruction of genome-scale model
 
@@ -72,12 +71,12 @@ Others' study has shown that starting from the highly curated content of a close
 
 (Co-)Orthologs between HNC47, BL21(DE3), B str. REL606, K-12 strain MG1655 and W strain are identified by Reciprocal BLAST (Bidirectional Best Hit) based Proteinortho with default parameters. The GEM is reconstructed based on these ortholog genes. For genes s0001, gltL, fucA, wbbJ, fucP, xapA, ompC, tynA, yedL, rbsD, vsr, lsrD and fliZ, they're not mapped to a genome annotation of BL21(DE3). So, in the building of our HNC47 GEM, the corresponding reactions are maintained. Considering dadX is cloned into the plasmid to maintain HNC47 strain’s normal growth, dadX is recovered and the reaction is also remained. Table 2 outlines the statistics of GEMs. Likewise, the major difference of new HNC47 GEM is the introduction of ybhE gene insertion, when compared to BL21(DE3). The new adding reaction aided by ybhE gene introduces an important process in the Pentose Phosphate Pathway, which promotes the generation of NADPH, pentoses as well as Ribose 5-phosphate, a precursor for the synthesis of nucleotides. Eventually, HNC47 metabolic model has 1350 genes involved in 2784 reactions with 1973 metabolites, as Table 2 shows. GSM files could be retrieved from "R:\\ERC\\NNRCC_ERC\\ERCPE\\Database\\HNC47\\Genome-scale model". SBML and JSON formats are provided. And in the R sybil package, it is suggested to use SBML format without fbc.
 
-                   Table 2. The statistics of E.coli GEMs
+<center>Table 2. The statistics of E.coli GEMs</center>
 | Component (#) | BL21(DE3) AM946981.2 | B str. REL606 CP000819.1 | HNC47 | HNC41 |
 |--------------:|---------------------:|-------------------------:|------:|------:|
 | Metabolites   |       1945           |       1953               | 1973  |  1942 |
 | Reactions     |       2742           |       2749               | 2784  |  2728 |
-| Genes         |       1337           |       1329               | 1350[^1] |  1330 |
+| Genes         |       1337           |       1329               | 1350[^1] | 1330 |
 [^1]: One additional reaction is also added to the model, when the induction phase begins. It is the recombinant protein synthesis reaction according to its amino acid sequence. The energy cost of protein synthesis is assumed to be 4.306 mmol ATP/mmol amino acids. 
 
 ### 2.2 Model parameters determination experimentally
@@ -86,14 +85,14 @@ In order to apply the model we first needed to determine strain-specific paramet
 
 <div style="text-align: center">
 <img src="growth_curve.jpg", width = "80%"/>
+<center>Figure 3. HNC47 maximum aerobic glucose uptake rate, determined from batch experiments as the growth rate (0.69 h-1 HNC47) divided by the biomass yield (0.547g DW/g glucose)</center>
 </div>
-Figure 3. HNC47 maximum aerobic glucose uptake rate, determined from batch experiments as the growth rate (0.69 h-1 HNC47) divided by the biomass yield (0.547g DW/g glucose).
 
 The model requires maximum glucose uptake rate specified for metabolic simulations of batch and fed-batch cultures to restrict the metabolic capacity for glucose utilization. It’s defined as the ratio of the growth rate to biomass yield in batch experiments (Figure 3). For aerobic batch cultures, we have determined this value to be 7 mmol/gDW/h for HNC47 and for other strains (Table 3). It seems surprised that the growth rate of HNC47 with Fc is a little higher than HNC47 without Fc plasmid. The reason still remains unclear.
 
-     Table 3. Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)
+<center>Table 3. Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)</center>
 | Strain           | Growth Rate (/h) | Glucose uptake rate (mmol/g DW/h) | Biomass yield rate (g DW/g glucose) | Oxygen uptake rate[^2] (mmol/g DW/h) |
-|----------------------:|----------------:|-----------------------------:|----------------------------:|------------------------------:|
+|----------------------:|------------------------:|-----------------------------:|-------------------------:|------------------------:|
 | HNC41 (PGL-)     | 	0.58      |	7.7	                    |          0.418                      |    11                  |
 | HNC47 (PGL+)     |  0.69	   |  7	                           |          0.547                      |    11                  |
 | HNC47 with Fc    |  0.76       |  9.58                             |          0.4413                     |    11.5                |
@@ -126,13 +125,13 @@ Induction phase starts when the IPTG pulse addition is done, and then, recombina
 
 In the constraint-based metabolic flux analysis, a prominent feature is that it is always required to define a reasonable objective function. And biomass objective function that describes the growth requirements of a cell is usually selected, e.g., in our batch and fed-batch cultures. The requirements contain the cell's chemical composition, i.e., protein, RNA, DNA, lipids, and cofactor content, as well as energy. Concretely, an average E. coli B/r cell growing exponentially at 37°C under aerobic conditions in glucose minimal medium with a doubling time of approximately 40 min has a dry weight of 2.8 × 10−13 g. The dry weight is 55% protein, 20.5% RNA, 3.1% DNA, 9.1% lipids, 3.4% lipopolysaccharides, 2.5% peptidoglycan, 2.5% glycogen, 0.4% polyamines, and 3.5% other metabolites, cofactors, and ions (Neidhardt, 1987). The types and amounts of precursors required to synthesize these macromolecules at a given growth rate could also be determined from the composition of each of the macromolecules: the amino acid composition of proteins, the nucleotide composition of RNA and DNA, the phospholipid composition, and the fatty acid composition from experimental data or primary literatures. However, the macromolecular composition is not the same for cells growing at different rates. Figure 4 shows the macromolecular composition of the cell changes with growth rate. Here, I modified their original fits describing the macromolecular composition such that all fits were linear:
 
-$$ Biomass content of a given molecular species (mmol/gdw) = slope\times\mu + intercept $$
+$$ Biomass \; content \; of \; a \; given \; molecular \; species \; (mmol/gdw) = slope\times\mu + intercept $$
 
 <div style="text-align: center">
 <img src="biomass_composition.jpg", width = "80%"/>
+<center>Figure 4. Variation in macromolecular composition of E. coli with growth rate, and the corresponding linearization between macromolecular composition and growth rate. All data are referred to J. Pramanik, J. D. Keasling. BIOTECHNOLOGY AND BIOENGINEERING, 1997
+In practice, when calculating the macromolecular content of the cell, the average u (growth rate) over the previous 2h was calculated first before computing the resulting biomass composition. In addition, the amino acid composition of proteins, the nucleotide composition of RNA and DNA remain the same all the time</center>
 </div>
-Figure 4. Variation in macromolecular composition of E. coli with growth rate, and the corresponding linearization between macromolecular composition and growth rate. All data are referred to J. Pramanik, J. D. Keasling. BIOTECHNOLOGY AND BIOENGINEERING, 1997
-In practice, when calculating the macromolecular content of the cell, the average u (growth rate) over the previous 2h was calculated first before computing the resulting biomass composition. In addition, the amino acid composition of proteins, the nucleotide composition of RNA and DNA remain the same all the time.
 
 ####	2.5.2 Growth associated ATP maintenance (GAM)
 
@@ -148,10 +147,10 @@ $$ \frac{1}{Y} = \frac{1}{Y_G} + \frac{m1}{\mu} $$
 
 By computing the maintenance coefficient m1 for the host before induction and recombinant cell after induction, we are able to know the increased NGAM requirement due to the metabolic burden during the induction phase. Table 4 lists the biomass and glucose time-course data during the MIC-1 expression. Based on the above Pirt’s theory, m1 for the recombinant cell with MIC-1 is 0.2459 g Glc/gDW/h (Figure 5). To convert m1 to NGAM, the following codes could be run:
 
-Table 4. Biomass and glucose data during the MIC-1 expression
+<center>Table 4. Biomass and glucose data during the MIC-1 expression</center>
 
 | Time after induction (hr) | DCW (g/L) | Volume (L) | Delta DCW (g) | Delta Glucose (g) | u (h-1) | 1/u (h) |	1/Yx/s |
-|---------------:|------------:|-------------:|---------:|-------------:|---------:|---------:|-----------:|
+|---------------:|------------:|-------------:|--------------:|---------------:|---------:|---------:|-----------:|
 | 0	 |  21	    | 0.107     |         |           |          |          |   		|			
 | 1	 |  27	    | 0.11134	| 0.75918 |	2.17 |	0.291074 | 3.43555 |	2.858347 |
 | 2      | 34       | 0.11568   | 0.92694 |	2.17 |	0.268763 | 3.720753 |	2.341036 |
@@ -160,8 +159,8 @@ Table 4. Biomass and glucose data during the MIC-1 expression
 
 <div style="text-align: center">
 <img src="NGAM.jpg", width = "60%"/>
+<center>Figure 5. Maintenance coefficient for the recombinant E. coli growing on glucose as the limiting nutrient</center>
 </div>
-Figure 5. Maintenance coefficient for the recombinant E. coli growing on glucose as the limiting nutrient
 
 ```{r}
 # Convert m1 to non-growth associated maintenance (NGAM) energy
@@ -188,9 +187,10 @@ Accordingly, for Fc under 50% glucose and 25% glucose + 10% YE feeding condition
 Based on the expression data and biomass DCW during induction phase, it could be found that as time goes, before 15h, more and more resources are allocated to Fc production in both 50%glc and 25%glc+10%YE conditions, and compared to 50%glc, with 10%YE complement, more resources are allocated to Fc production (Figure 6). This inspires me to apply a new model to deal with the resources distribution between biomass and recombinant protein. 
 
 <div style="text-align: center">
-<img src="Proteome resource allocation.jpg", width = "50%"/>
+<img src="Proteome resource allocation.jpg", width = "60%"/>
+<center>Figure 6. Ratio of Fc to DCW in two feeding cultures: 50% glucose and 25% glucose + 10% YE</center>
 </div>
-Figure 6. Ratio of Fc to DCW in two feeding cultures: 50% glucose and 25% glucose + 10% YE
+
 
 Scott M et al. proposed a new proteome resource allocation theory in their impressive Science paper in 2010. That is, considering a four-component proteome consisting of: 
 * 1) $\Phi_R$ : class R of mass fraction, containing all the ribosome proteins and their affiliates 
@@ -211,7 +211,7 @@ we could have
 
 $$ \frac{\lambda(\Phi_U)}{\lambda(\Phi_U = 0)} = 1 - \frac{\Phi_U}{\Phi_C} $$
 
-where $\Phi_C = \rho\times(r_{max} - r_0) \approx 0.48$ , $\lambda(\Phi_U)$ is the growth rate with $\Phi_U$ in the proteome, and $\lambda(\Phi_U = 0)$ is the growth rate without unnecessary protein in the proteome.
+where $\rho$ is conversion factor which could be considered as constant, $\lambda$ is specific growth rate,$\kappa_n$ and $\kappa_t$ are nutritional and translational capacity of the organism, and $\Phi_C = \rho\times(r_{max} - r_0) \approx 0.48$ , $\lambda(\Phi_U)$ is the growth rate with $\Phi_U$ in the proteome, and $\lambda(\Phi_U = 0)$ is the growth rate without unnecessary protein in the proteome.
 
 According to this theory, the growth reduction induced by heterologous protein expression is a simple consequence of proteome allocations. And more heterologous proteins, less growth rate. Our data of Fc and biomass corroborates this. In addition, considering mass fraction of the proteome in biomass is 55%-68%, then we could deduce theoretical maximal mass fraction of recombinant protein in biomass is 32.64% (Figure 6). 
 
@@ -219,17 +219,18 @@ Rather than original recombinant constraints parameters to adjust the resources 
 
 ## 2.6 Apply the model to defined and complex medium
 
+```{r}
 library(deSolve)
 
+## Set the constraints
 lowbnd(model)[react_id(model) == 'EX_glc__D(e)'] = -9.58; ## for HNC47 with Fc
 lowbnd(model)[react_id(model) == 'EX_o2(e)']=-11.5; # for HNC47 with Fc
 
 ## Add Fc synthesis reaction into the model
 model <- addReact(model,id="RecombinantProtein",
-			met=c('ala__L[c]','cys__L[c]','asp__L[c]','glu__L[c]','phe__L[c]','gly[c]','his__L[c]','ile__L[c]','lys__L[c]','leu__L[c]','met__L[c]','asn__L[c]',
-				'pro__L[c]','gln__L[c]','arg__L[c]','ser__L[c]','thr__L[c]','val__L[c]','trp__L[c]','tyr__L[c]','atp[c]','adp[c]','pi[c]'),
-			Scoef=c(-c(6,6,9,17,9,11,5,4,17,17,3,11,19,11,6,24,14,23,4,8),-4.306*224,964.544,965.544),
-			lb=0,ub=1000,obj=0);
+           met=c('ala__L[c]','cys__L[c]','asp__L[c]','glu__L[c]','phe__L[c]','gly[c]','his__L[c]','ile__L[c]','lys__L[c]','leu__L[c]','met__L[c]','asn__L[c]','pro__L[c]','gln__L[c]','arg__L[c]','ser__L[c]','thr__L[c]','val__L[c]','trp__L[c]','tyr__L[c]','atp[c]','adp[c]','pi[c]'),
+Scoef=c(-c(6,6,9,17,9,11,5,4,17,17,3,11,19,11,6,24,14,23,4,8),-4.306*224,964.544,965.544),
+lb=0,ub=1000,obj=0);
 
 ## Define FDM recipe
 substrateRxns = c('EX_glc__D(e)','EX_nh4(e)','EX_pi(e)','EX_so4(e)','EX_mg2(e)','EX_k(e)','EX_ca2(e)','EX_cl(e)','EX_fe2(e)','EX_mn2(e)','EX_cu2(e)','EX_zn2(e)','EX_mobd(e)');
@@ -244,9 +245,9 @@ lowbnd(model)[react_id(model) == 'EX_sel(e)'] = 0;
 lowbnd(model)[react_id(model) == 'EX_slnt(e)'] = 0;
 
 ## 10% YE + 25% glucose for feeding during induction
-AA <- c('EX_ala__L(e)','EX_arg__L(e)','EX_asn__L(e)','EX_asp__L(e)','EX_cys__L(e)','EX_gln__L(e)','EX_glu__L(e)','EX_gly(e)',
-		'EX_his__L(e)','EX_ile__L(e)','EX_leu__L(e)','EX_lys__L(e)','EX_met__L(e)','EX_phe__L(e)','EX_pro__L(e)',
-		'EX_ser__L(e)','EX_thr__L(e)','EX_trp__L(e)','EX_tyr__L(e)','EX_val__L(e)')
+AA <-c('EX_ala__L(e)','EX_arg__L(e)','EX_asn__L(e)','EX_asp__L(e)','EX_cys__L(e)','EX_gln__L(e)','EX_glu__L(e)',
+'EX_gly(e)','EX_his__L(e)','EX_ile__L(e)','EX_leu__L(e)','EX_lys__L(e)','EX_met__L(e)','EX_phe__L(e)','EX_pro__L(e)',
+'EX_ser__L(e)','EX_thr__L(e)','EX_trp__L(e)','EX_tyr__L(e)','EX_val__L(e)')
 
 conc_aa_feeding <- 2.5*c(15.018,8.795,0.000,6.655,0.000,0.000,16.459,7.423,0.000,6.955,11.957,5.917,2.207,5.588,3.082,4.451,6.036,0.000,1.175,9.289)	
 feedSubstrateRxns = c('EX_glc__D(e)','EX_nh4(e)','EX_so4(e)','EX_mg2(e)','EX_fe2(e)','EX_mn2(e)','EX_cu2(e)','EX_zn2(e)','EX_mobd(e)',AA);
@@ -254,14 +255,16 @@ feedConcentrations = c(2775.3,0.00924,40.23174,40,0.0719,0.09171,0.00881,0.05912
 feedConcentrations = feedConcentrations/2;
 feedConcentrations = c(feedConcentrations,conc_aa_feeding);
 
-Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,initBiomass=0.0142,
-				u_fix=0.15,x_ind= 31.63,
+Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,initBiomass = 0.0142,
+				u_fix = 0.15,x_ind = 31.63,
 				feedSubstrateRxns = feedSubstrateRxns,feedConcentrations = feedConcentrations,
 				yield_rate = 0.6586, # 25% glucose + 10% YE
 				ngam = 6.34,
 				initRatio = 0.70,
 				feedRate_ind = 2.8,
-				timeStep=0.25,nSteps=180,fld=TRUE);
+				timeStep = 0.25,nSteps = 180,
+				rcd = TRUE,fld = TRUE);
+```
 
 ```{r,fig.height = 6, fig.width = 6}
 ## compare predictions with experimental results during induction phase
@@ -284,6 +287,86 @@ axis(4);
 mtext("Recombinant protein(g/L)",side=4,cex=0.8);
 legend("bottomright", c("Biomass","Recombinant protein"), col=c(2,4), lty=1, pch=c(2,3),text.font = 1.2, cex = 0.6);
 ```
+
+```{r}
+## save flux distributions
+Matrix <- matrix(Ec_df2@fluxMatrix,nrow=react_num(model),ncol=length(Ec_df2@timeVec),byrow = FALSE);
+subsystemsMatrix <- subSys(model);
+subsystems_name <- colnames(subsystemsMatrix);
+subsystems <- apply(subsystemsMatrix,1,function(x) paste(subsystems_name[x],collapse = ", "));
+
+react_tmp <- printReaction(model,react=c(1:react_num(model)),printOut=FALSE);
+react_equation <- unlist(strsplit(react_tmp,"\t"))[seq(2,2*react_num(model),2)];
+
+Matrix <- cbind(react_id(model),react_name(model),react_equation,subsystems,Matrix);
+colnames(Matrix) = c("ReactID\\Time(h)","ReactName","ReactEquation","Subsystem",Ec_df2@timeVec);
+write.table(Matrix,file="HNC47_flux_distributions.tab",sep="\t",row.names=FALSE);
+
+## save concentration distributions
+concMatrix <- matrix(Ec_df2@concentrationMatrix,nrow=length(Ec_df2@excRxnNames),ncol=length(Ec_df2@timeVec),byrow=FALSE);
+colnames(concMatrix) = col.names=Ec_df2@timeVec;
+rownames(concMatrix) = Ec_df2@excRxnNames;
+write.table(concMatrix,file="HNC47_conc_distributions.tab",sep="\t",col.names=NA);
+
+## reduced costs
+Matrix <- matrix(Ec_df2@redCostMatrix,nrow=react_num(model),ncol=length(Ec_df2@timeVec),byrow = FALSE);
+subsystemsMatrix <- subSys(model);
+subsystems_name <- colnames(subsystemsMatrix);
+subsystems <- apply(subsystemsMatrix,1,function(x) paste(subsystems_name[x],collapse = ", "));
+
+react_tmp <- printReaction(model,react=c(1:react_num(model)),printOut=FALSE);
+react_equation <- unlist(strsplit(react_tmp,"\t"))[seq(2,2*react_num(model),2)];
+
+Matrix <- cbind(react_id(model),react_name(model),react_equation,subsystems,Matrix);
+colnames(Matrix) = c("ReactID\\Time(h)","ReactName","ReactEquation","Subsystem",Ec_df2@timeVec);
+write.table(Matrix,file="HNC47_redCost_distributions.tab",sep="\t",row.names=FALSE);
+
+```
+## 3. Metabolic flux analysis
+
+### 3.1 PCA analysis
+
+Analyzing the results of a genome-scale dynamic flux balance analysis presents a significant challenge since more than 2,000 variables (reaction fluxes) are available for each simulation. Principal Component Analysis (PCA) is a multivariate data analysis technique capable of making sense of such datasets. PCA is a projection method designed to display systemic variation and extract information from noise in a data matrix X by projecting points to a number of principal components. The information in many variables can be captured by a few principal components. Plots based on PCA show relationships between variables and between observations, indicating degree of correlation between variables. Before analysis, the input data is mean-centered and scaled to unit variance. Figure 1 shows such a plot visualizing differences between data points based on relative separation. One data point means a flux distribution with/without one amino acid supplementation during the induction phase, and color means different time points since the starting of the induction. Each amino acid is added according to its required amount for increased biomass and Fc production with constant feeding. There appears to be 2 major classes: one with gln adding and others. This indicates medium supplementation with gln would cause a significant difference in metabolic state compared to others. Therefore, it should be cautious when considering supplementing this amino acid, as it may cause unexpected product quality changes.
+
+The lack of significant change in cellular metabolism for other kinds of amino acids adding, in particular his, cys, trp, ser and asn compared to the control, is a positive finding for increasing process yield by amino acid adding. Even, the lack of notable metabolic difference is time-independent. From a bioprocessing standpoint, this is desirable as increasing production without perturbing cell culture state will in theory avoid potential changes in product quality attributes or undesirable side-consequences.
+
+Figure 7. Metabolic variations over cell-cultures with amino acid supplementation by principal component analysis (PCA)
+
+### 3.2 Identify metabolic reactions that are shifted significantly
+
+A typical idea to determine intracellular flux changes significantly is described as follows. First, reaction fluxes are sampled for two conditions. Subsequently, sample of flux differences is calculated by selecting random flux values from each condition to obtain a distribution of flux differences for each reaction. Finally, standardized reaction Z-scores are determined, which represent how far the sampled flux differences deviates from a zero flux change, or the background. Reaction scores can be used in visualizing perturbation subnetworks and analyzing reporter metabolites and subsystems. For more details, please refer to 
+
+
+
+### 3.3 PTM analysis
+
+In E. coli, both methylation and acetylation can occur on recombinant proteins. For the former, S-adenosylmethionine (SAM) is reported to be the only methy-donor and thus, its concentration and related enzymes, e.g., methyltransferases, will affect the status of protein methylation. It is also reported that S-adenosylhomocysteine (SAH) is a competitive inhibitor of the methyltransferases, therefore the SAM:SAH ratio dictates the activity of the transferases. And because homocysteine could be converted from SAH and to Met and then to SAM, circulating homocysteine levels correlate inversely with cellular SAM:SAH ratio, too. In addition, demethylation depends on both O2 and a-ketoglutarate. Among TCA cycle metabolites, a-ketoglutarate promotes demethylation, whereas other dicarboxylic acids, such as succinate and fumarate, are competitive inhibitors of the a-ketoglutarate-dependent demethylases. 
+	
+For the latter, acetylation, acetyl-coenzyme A (acetyl-CoA) is the acetyl donor for all acetylation modifications. There are two kinds of acetylation modifications:
+
+*Nα-acetylation: N-terminal acetyltransferases perform Nα-acetylation on the α-amino group of the first amino acid residue of nascent polypeptides. As a common co-translational modification, Nα-acetylation controls protein synthesis, stability and localization of the vast majority of eukaryotic proteins and is an irreversible reaction. RimI, Riml and RimJ of E. coli are reported to be related to this kind of modification.
+
+*Nε-acetylation: both dynamic and reversible. By contrast, post-translational acetylation catalyses site-specific Nε-acetylation of the ε-amino group of lysine residues, which is a reversible reaction. The reversibility of Nε- acetylation makes this post-translational modification especially favourable in the regulation of proteins in response to metabolic changes. Two mechanisms have been identified:  one is enzymatic, dependent on an acetyltransferase and acetyl-coenzyme A; the other is non-enzymatic and depends on the reactivity of acetyl phosphate. In Escherichia coli, YfiQ (also known as Pka, Pla and PatZ) is the only known KAT (lysine acetyltransferase), whereas the NAD+-dependent sirtuin CobB appears to be the sole or predominant KDAC (lysine deacetylase).
+
+Metabolic flux analysis could provide some interesting insights to these two kinds of PTMs in E.coli. By summing all producing reaction fluxes for these relevant metabolites, the sum flux for each metabolite could be estimated. Table 1 shows the flux ratio of SAM:SAH with 25%glc+10%YE conditions undergoes 12.4 at phase 1 to 16.6 at phase 2, and finally to 18 at phase 3, while with 50%glc the corresponding values are 11.9, 14.4 and 17.9, respectively. It seems that with 25%glc+10%YE, relatively more SAM and less SAH are synthesized. High SAM:SAH ratio apparently indicates high methylation rate. Meanwhile, low levels of homocysteine are also observed with 25%glc+10%YE. Demethylation by a-ketoglutarate, in contrast, is less favored due to low turnover rates of a-ketoglutarate (Figure 4). Consequently, it sounds plausible to observe a relative high methylation status with YE supplement because both methylation and demethylation environments incline to it.
+	
+<center>Table 1. Cumulative producing fluxes for three key metabolites related to methylation in E. coli</center>
+| metabolite |	25%glc_10%YE p1 | 25%glc_10%YE p2 | 25%glc_10%YE p3 | 50%glc p1 | 50%glc p2 | 50%glc p3 |
+|--------------------------:|------------:|------------:|------------:|------------:|------------:|------------:|
+| ahcys_c (SAH) | 4.30E-05 | 1.39E-05 | 1.03E-05 | 5.62E-05 | 2.27E-05 | 1.27E-05 |
+| amet_c (SAM) | 0.000532983 | 0.000231416 | 0.00018513 | 0.000668798 | 0.00032725 | 0.000227168 |
+| SAM:SAH | 12.4 | 16.6 | 18 | 11.9 | 14.4 | 17.9 |
+| hcys__L_c (homocysteine) | 0.010198546 | 0.003803588 | 0.002729702 | 0.019674748 | 0.0099403 | 0.006688996 |
+
+Previous metabolic flux analysis results have already shown that many significant shifting reactions are NADH-producing reactions. As a result, it is interesting to examine the cumulative producing flux of NADH, especially when we consider it also relates to protein acetylation levels. From Figure 4, it could be observed that both acetyl-CoA and NADH are produced less with 25%glc+10%YE condition. Low levels of acetyl-CoA indicates low level of acetylation, and low NADH means higher NAD+/NADH ratio. This NAD+/NADH ratio changes seem likely to regulate the protein acylation state, with deacylation occurring when the NAD+/NADH ratio is high and acetylation being favored when the NAD+/NADH ratio is low. Low acetylation and high deacylation with 25%glc+10%YE could explain why under this culture condition, less acetylation occurs on the recombinant protein Fc. In addition, non-enzymatic dependent acetyl phosphate doesn’t show significant difference between these two conditions (data not shown). However, it is still unclear which type of acetylation is preferred. More efforts are required to investigate it.
+
+## 4. Reference
+1. O’Brien EJ, et al. Cell 2015, 161 (5), 971–987; 
+2. King ZA, et al. Nucleic Acids Res 2015, 44 (D1); 
+3. Pramanik J, et al. Biotechnol. Bioeng. 1997, 56 (4), 398–421; 
+4. Meadows AL, et al. Metabolic Engineering 2010, 12 (2), 150–160; 
+5. Mahadevan R, et al. Biophysical Journal 2002, 83 (3), 1331–1340.
+6. Scott M, et al. Science 2010, 330(6007):1099-102
 
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 

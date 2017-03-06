@@ -30,10 +30,11 @@ The proposed model is composed by six blocks as depicted in the scheme shown in 
 <center>Figure 1. Model blocks and variables. For interpretation of variables, please refer to Table 1</center>
 </div>
 
-
+<br />
 <center>Table 1 Ordinary differential equations and variales nomenclature</center>
-
-![](ODE.jpg)
+<div style="text-align: center">
+<img src="ODE.jpg", width = "50%"/>
+</div>
 
 ### 2.1 Construction of a constraint-based genome-scale model
 
@@ -57,11 +58,11 @@ Since we also have illumina paird-end sequencing data of HNC47 genomic DNA, this
 #### 2.1.2 Genomic annotation
 
 The annotation includes the following contents:
-    * 1) Protein-coding genes and corresponding coding sequence (CDS)
-    * 2) ribosomal RNA genes (rRNA)
-    * 3) transfer RNA genes
-    * 4) non-coding RNA genes
-    * 5) CRISPR
+* 1) Protein-coding genes and corresponding coding sequence (CDS)
+* 2) ribosomal RNA genes (rRNA)
+* 3) transfer RNA genes
+* 4) non-coding RNA genes
+* 5) CRISPR
 
 Prokka combined with other tools including Prodigal, Barrnap, Aragorn, Infernal and MINCED is used to annotate this prokaryote genome.  Result files with various formats are deposited in "R:\\ERC\\NNRCC_ERC\\ERCPE\\Database\\HNC47".
 
@@ -92,7 +93,7 @@ The model requires maximum glucose uptake rate specified for metabolic simulatio
 
 <center>Table 3. Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)</center>
 | Strain           | Growth Rate (/h) | Glucose uptake rate (mmol/g DW/h) | Biomass yield rate (g DW/g glucose) | Oxygen uptake rate[^2] (mmol/g DW/h) |
-|----------------------:|------------------------:|-----------------------------:|-------------------------:|------------------------:|
+|----------------------:|------------------:|-----------------------------:|-------------------------:|------------------------------:|
 | HNC41 (PGL-)     | 	0.58      |	7.7	                    |          0.418                      |    11                  |
 | HNC47 (PGL+)     |  0.69	   |  7	                           |          0.547                      |    11                  |
 | HNC47 with Fc    |  0.76       |  9.58                             |          0.4413                     |    11.5                |
@@ -145,12 +146,12 @@ where q is the specific rate of utilization of the energy source (glucose uptake
 
 $$ \frac{1}{Y} = \frac{1}{Y_G} + \frac{m1}{\mu} $$
 
-By computing the maintenance coefficient m1 for the host before induction and recombinant cell after induction, we are able to know the increased NGAM requirement due to the metabolic burden during the induction phase. Table 4 lists the biomass and glucose time-course data during the MIC-1 expression. Based on the above Pirt’s theory, m1 for the recombinant cell with MIC-1 is 0.2459 g Glc/gDW/h (Figure 5). To convert m1 to NGAM, the following codes could be run:
+By computing the maintenance coefficient m1 for the host before induction and recombinant cell after induction, we are able to know the increased NGAM requirement due to the metabolic burden during the induction phase. Table 4 lists the biomass and glucose time-course data during the MIC-1 expression. Based on the above Pirt's theory, m1 for the recombinant cell with MIC-1 is 0.2459 g Glc/gDW/h (Figure 5). To convert m1 to NGAM, the following codes could be run:
 
 <center>Table 4. Biomass and glucose data during the MIC-1 expression</center>
 
 | Time after induction (hr) | DCW (g/L) | Volume (L) | Delta DCW (g) | Delta Glucose (g) | u (h-1) | 1/u (h) |	1/Yx/s |
-|---------------:|------------:|-------------:|--------------:|---------------:|---------:|---------:|-----------:|
+|------------------:|------------:|-------------:|--------------:|-----------------:|---------:|---------:|-----------:|
 | 0	 |  21	    | 0.107     |         |           |          |          |   		|			
 | 1	 |  27	    | 0.11134	| 0.75918 |	2.17 |	0.291074 | 3.43555 |	2.858347 |
 | 2      | 34       | 0.11568   | 0.92694 |	2.17 |	0.268763 | 3.720753 |	2.341036 |
@@ -178,9 +179,7 @@ u_max
 lowbnd(model)[react_id(model) == 'EX_glc__D(e)'] = - 20
 model = changeObjFunc(model,c('BIOMASS_Ec_iJO1366_core_53p95M', 'ATPM'),c(1,0))
 ```
-It outputs 32.075 mmol ATP/gDW/h, which is NGAM with MIC-1 case.
-
-Accordingly, for Fc under 50% glucose and 25% glucose + 10% YE feeding conditions, m1 and NGAM are 0.0806 g Glc/gDW/h and 10.51 mmol ATP/gDW/h, 0.0486 g Glc/gDW/h and 6.34 mmol ATP/gDW/h, respectively. And meanwhile, this m1 is supposed not to include the energy cost of recombinant protein synthesis, because $\mu$ actually represents the overall characteristics of the cell with recombinant protein expression (without recombinant expression, it's foreseeable to observe a larger $\mu$). Obviously, the metabolic burden caused by MIC-1 is much larger than that by Fc.
+It outputs 32.075 mmol ATP/gDW/h, which is NGAM with MIC-1 case. Accordingly, for Fc under 50% glucose and 25% glucose + 10% YE feeding conditions, m1 and NGAM are 0.0806 g Glc/gDW/h and 10.51 mmol ATP/gDW/h, 0.0486 g Glc/gDW/h and 6.34 mmol ATP/gDW/h, respectively. And meanwhile, this m1 is supposed not to include the energy cost of recombinant protein synthesis, because $\mu$ actually represents the overall characteristics of the cell with recombinant protein expression (without recombinant expression, it's foreseeable to observe a larger $\mu$). Obviously, the metabolic burden caused by MIC-1 is much larger than that by Fc.
 
 #### 2.5.4 A new proteome allocation model to balance resources distribution between biomass and recombinant protein
 
@@ -255,15 +254,16 @@ feedConcentrations = c(2775.3,0.00924,40.23174,40,0.0719,0.09171,0.00881,0.05912
 feedConcentrations = feedConcentrations/2;
 feedConcentrations = c(feedConcentrations,conc_aa_feeding);
 
-Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,initBiomass = 0.0142,
-				u_fix = 0.15,x_ind = 31.63,
-				feedSubstrateRxns = feedSubstrateRxns,feedConcentrations = feedConcentrations,
-				yield_rate = 0.6586, # 25% glucose + 10% YE
-				ngam = 6.34,
-				initRatio = 0.70,
-				feedRate_ind = 2.8,
-				timeStep = 0.25,nSteps = 180,
-				rcd = TRUE,fld = TRUE);
+
+#Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,initBiomass = 0.0142,
+#				u_fix = 0.15,x_ind = 31.63,
+#				feedSubstrateRxns = feedSubstrateRxns,feedConcentrations = feedConcentrations,
+#				yield_rate = 0.6586, # 25% glucose + 10% YE
+#				ngam = 6.34,
+#				initRatio = 0.70,
+#				feedRate_ind = 2.8,
+#				timeStep = 0.25,nSteps = 180,
+#				rcd = TRUE,fld = TRUE);
 ```
 
 ```{r,fig.height = 6, fig.width = 6}
@@ -336,17 +336,15 @@ Figure 7. Metabolic variations over cell-cultures with amino acid supplementatio
 
 A typical idea to determine intracellular flux changes significantly is described as follows. First, reaction fluxes are sampled for two conditions. Subsequently, sample of flux differences is calculated by selecting random flux values from each condition to obtain a distribution of flux differences for each reaction. Finally, standardized reaction Z-scores are determined, which represent how far the sampled flux differences deviates from a zero flux change, or the background. Reaction scores can be used in visualizing perturbation subnetworks and analyzing reporter metabolites and subsystems. For more details, please refer to 
 
-
-
 ### 3.3 PTM analysis
 
 In E. coli, both methylation and acetylation can occur on recombinant proteins. For the former, S-adenosylmethionine (SAM) is reported to be the only methy-donor and thus, its concentration and related enzymes, e.g., methyltransferases, will affect the status of protein methylation. It is also reported that S-adenosylhomocysteine (SAH) is a competitive inhibitor of the methyltransferases, therefore the SAM:SAH ratio dictates the activity of the transferases. And because homocysteine could be converted from SAH and to Met and then to SAM, circulating homocysteine levels correlate inversely with cellular SAM:SAH ratio, too. In addition, demethylation depends on both O2 and a-ketoglutarate. Among TCA cycle metabolites, a-ketoglutarate promotes demethylation, whereas other dicarboxylic acids, such as succinate and fumarate, are competitive inhibitors of the a-ketoglutarate-dependent demethylases. 
 	
 For the latter, acetylation, acetyl-coenzyme A (acetyl-CoA) is the acetyl donor for all acetylation modifications. There are two kinds of acetylation modifications:
 
-*Nα-acetylation: N-terminal acetyltransferases perform Nα-acetylation on the α-amino group of the first amino acid residue of nascent polypeptides. As a common co-translational modification, Nα-acetylation controls protein synthesis, stability and localization of the vast majority of eukaryotic proteins and is an irreversible reaction. RimI, Riml and RimJ of E. coli are reported to be related to this kind of modification.
+* N$\alpha$-acetylation: N-terminal acetyltransferases perform Nα-acetylation on the α-amino group of the first amino acid residue of nascent polypeptides. As a common co-translational modification, Nα-acetylation controls protein synthesis, stability and localization of the vast majority of eukaryotic proteins and is an irreversible reaction. RimI, Riml and RimJ of E. coli are reported to be related to this kind of modification.
 
-*Nε-acetylation: both dynamic and reversible. By contrast, post-translational acetylation catalyses site-specific Nε-acetylation of the ε-amino group of lysine residues, which is a reversible reaction. The reversibility of Nε- acetylation makes this post-translational modification especially favourable in the regulation of proteins in response to metabolic changes. Two mechanisms have been identified:  one is enzymatic, dependent on an acetyltransferase and acetyl-coenzyme A; the other is non-enzymatic and depends on the reactivity of acetyl phosphate. In Escherichia coli, YfiQ (also known as Pka, Pla and PatZ) is the only known KAT (lysine acetyltransferase), whereas the NAD+-dependent sirtuin CobB appears to be the sole or predominant KDAC (lysine deacetylase).
+* N$\epsilon$-acetylation: both dynamic and reversible. By contrast, post-translational acetylation catalyses site-specific Nε-acetylation of the ε-amino group of lysine residues, which is a reversible reaction. The reversibility of Nε- acetylation makes this post-translational modification especially favourable in the regulation of proteins in response to metabolic changes. Two mechanisms have been identified:  one is enzymatic, dependent on an acetyltransferase and acetyl-coenzyme A; the other is non-enzymatic and depends on the reactivity of acetyl phosphate. In Escherichia coli, YfiQ (also known as Pka, Pla and PatZ) is the only known KAT (lysine acetyltransferase), whereas the NAD+-dependent sirtuin CobB appears to be the sole or predominant KDAC (lysine deacetylase).
 
 Metabolic flux analysis could provide some interesting insights to these two kinds of PTMs in E.coli. By summing all producing reaction fluxes for these relevant metabolites, the sum flux for each metabolite could be estimated. Table 1 shows the flux ratio of SAM:SAH with 25%glc+10%YE conditions undergoes 12.4 at phase 1 to 16.6 at phase 2, and finally to 18 at phase 3, while with 50%glc the corresponding values are 11.9, 14.4 and 17.9, respectively. It seems that with 25%glc+10%YE, relatively more SAM and less SAH are synthesized. High SAM:SAH ratio apparently indicates high methylation rate. Meanwhile, low levels of homocysteine are also observed with 25%glc+10%YE. Demethylation by a-ketoglutarate, in contrast, is less favored due to low turnover rates of a-ketoglutarate (Figure 4). Consequently, it sounds plausible to observe a relative high methylation status with YE supplement because both methylation and demethylation environments incline to it.
 	
@@ -361,12 +359,12 @@ Metabolic flux analysis could provide some interesting insights to these two kin
 Previous metabolic flux analysis results have already shown that many significant shifting reactions are NADH-producing reactions. As a result, it is interesting to examine the cumulative producing flux of NADH, especially when we consider it also relates to protein acetylation levels. From Figure 4, it could be observed that both acetyl-CoA and NADH are produced less with 25%glc+10%YE condition. Low levels of acetyl-CoA indicates low level of acetylation, and low NADH means higher NAD+/NADH ratio. This NAD+/NADH ratio changes seem likely to regulate the protein acylation state, with deacylation occurring when the NAD+/NADH ratio is high and acetylation being favored when the NAD+/NADH ratio is low. Low acetylation and high deacylation with 25%glc+10%YE could explain why under this culture condition, less acetylation occurs on the recombinant protein Fc. In addition, non-enzymatic dependent acetyl phosphate doesn’t show significant difference between these two conditions (data not shown). However, it is still unclear which type of acetylation is preferred. More efforts are required to investigate it.
 
 ## 4. Reference
-1. O’Brien EJ, et al. Cell 2015, 161 (5), 971–987; 
+1. O'Brien EJ, et al. Cell 2015, 161 (5), 971–987; 
 2. King ZA, et al. Nucleic Acids Res 2015, 44 (D1); 
 3. Pramanik J, et al. Biotechnol. Bioeng. 1997, 56 (4), 398–421; 
 4. Meadows AL, et al. Metabolic Engineering 2010, 12 (2), 150–160; 
-5. Mahadevan R, et al. Biophysical Journal 2002, 83 (3), 1331–1340.
-6. Scott M, et al. Science 2010, 330(6007):1099-102
+5. Mahadevan R, et al. Biophysical Journal 2002, 83 (3), 1331–1340;
+6. Scott M, et al. Science 2010, 330(6007):1099-102.
 
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 

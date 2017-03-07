@@ -33,7 +33,7 @@ The proposed model is composed by six blocks as depicted in the scheme shown in 
 <br />
 <center>Table 1 Ordinary differential equations and variales nomenclature</center>
 <div style="text-align: center">
-<img src="ODE.jpg", width = "70%"/>
+<img src="ODE.jpg", width = "80%"/>
 </div>
 
 ### 2.1 Construction of a constraint-based genome-scale model
@@ -45,7 +45,7 @@ The central component of the FBA is a stoichiometric matrix, which is converted 
 <center>Figure 2. The genome-scale model reconstruction process</center>
 </div>
 
-####	2.1.1 *De novo* sequencing and assembly of HNC47 by PacBio *RS II*
+#### 2.1.1 *De novo* sequencing and assembly of HNC47 by PacBio *RS II*
 
 Single molecule, real-time sequencing by PacBio has become the gold standard for finishing microbial genomes. Thus, we sequenced HNC47 genomic DNA by PacBio RS II of Tianjin Pangu Gene company, with a single library (<20kb). Sequencing statistics data shows it generates 1237Mb data, containing 86228 raw reads (polymerase reads), of which the average length and quality are 14.346kb and 0.84, respectively. After consensus calling, the average length and quality of circular consensus reads (reads of insert) are 8.682kb and 0.87, respectively. The QC-loading report shows that the percentage of ZMWs that are productive and sequencing is more than 50%, demonstrating the well-loading of this sequencing experiment.
  
@@ -88,7 +88,7 @@ In order to apply the model we first needed to determine strain-specific paramet
 <img src="growth_curve.jpg", width = "80%"/>
 <center>Figure 3. HNC47 maximum aerobic glucose uptake rate, determined from batch experiments as the growth rate (0.69 h-1 HNC47) divided by the biomass yield (0.547g DW/g glucose)</center>
 </div>
-
+<br />
 The model requires maximum glucose uptake rate specified for metabolic simulations of batch and fed-batch cultures to restrict the metabolic capacity for glucose utilization. It’s defined as the ratio of the growth rate to biomass yield in batch experiments (Figure 3). For aerobic batch cultures, we have determined this value to be 7 mmol/gDW/h for HNC47 and for other strains (Table 3). It seems surprised that the growth rate of HNC47 with Fc is a little higher than HNC47 without Fc plasmid. The reason still remains unclear.
 
 <center>Table 3. Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)</center>
@@ -120,7 +120,7 @@ $$ dS/dt = qX - DS $$
 
 Induction phase starts when the IPTG pulse addition is done, and then, recombinant protein starts to express. We first add this recombiant protein expression reaction into our genome-scale model, according to precursor balances and energetic requirements:
 
-(6) ala__L[c] + (6) arg__L[c] + (11) asn__L[c] + (9) asp__L[c] + (6) cys__L[c] + (11) gln__L[c] + (17) glu__L[c] + (11) gly[c] + (5) his__L[c] + (4) ile__L[c] + (17) leu__L[c] + (17) lys__L[c] + (3) met__L[c] + (9) phe__L[c] + (19) pro__L[c] + (24) ser__L[c] + (14) thr__L[c] + (8) tyr__L[c] + (23) val__L[c] + (4) trp__L[c] + (964.544) atp[c] --> (1) Protein[c] + (964.544) adp[c] + (964.544) pi[c]
+\(6) ala__L[c] + (6) arg__L[c] + (11) asn__L[c] + (9) asp__L[c] + (6) cys__L[c] + (11) gln__L[c] + (17) glu__L[c] + (11) gly[c] + (5) his__L[c] + (4) ile__L[c] + (17) leu__L[c] + (17) lys__L[c] + (3) met__L[c] + (9) phe__L[c] + (19) pro__L[c] + (24) ser__L[c] + (14) thr__L[c] + (8) tyr__L[c] + (23) val__L[c] + (4) trp__L[c] + (964.544) atp[c] --> (1) Protein[c] + (964.544) adp[c] + (964.544) pi[c]
 
 ####	2.5.1 Growth-rate dependent biomass composition
 
@@ -157,12 +157,12 @@ By computing the maintenance coefficient m1 for the host before induction and re
 | 2      | 34       | 0.11568   | 0.92694 |	2.17 |	0.268763 | 3.720753 |	2.341036 |
 | 3	 | 39	    | 0.12002	| 0.74766 | 2.17     | 0.174032 | 5.746078 | 2.902389 |
 | 4	 | 42	    | 0.12436	| 0.54234 | 2.17     | 0.10963 | 9.121577 | 4.00118 |
-
+<br />
 <div style="text-align: center">
 <img src="NGAM.jpg", width = "60%"/>
 <center>Figure 5. Maintenance coefficient for the recombinant E. coli growing on glucose as the limiting nutrient</center>
 </div>
-
+<br />
 ```{r}
 # Convert m1 to non-growth associated maintenance (NGAM) energy
 library(sybil)
@@ -189,7 +189,7 @@ Based on the expression data and biomass DCW during induction phase, it could be
 <img src="Proteome resource allocation.jpg", width = "60%"/>
 <center>Figure 6. Ratio of Fc to DCW in two feeding cultures: 50% glucose and 25% glucose + 10% YE</center>
 </div>
-
+<br />
 
 Scott M et al. proposed a new proteome resource allocation theory in their impressive Science paper in 2010. That is, considering a four-component proteome consisting of: 
     1) $\Phi_R$ : class R of mass fraction, containing all the ribosome proteins and their affiliates 
@@ -210,7 +210,7 @@ we could have
 
 $$ \frac{\lambda(\Phi_U)}{\lambda(\Phi_U = 0)} = 1 - \frac{\Phi_U}{\Phi_C} $$
 
-where $\rho$ is conversion factor which could be considered as constant, $\lambda$ is specific growth rate,$\kappa_n$ and $\kappa_t$ are nutritional and translational capacity of the organism, and $\Phi_C = \rho\times(r_{max} - r_0) \approx 0.48$ , $\lambda(\Phi_U)$ is the growth rate with $\Phi_U$ in the proteome, and $\lambda(\Phi_U = 0)$ is the growth rate without unnecessary protein in the proteome.
+where $\rho$ is conversion factor which could be considered as constant, $\lambda$ is specific growth rate, $\kappa_n$ and $\kappa_t$ are nutritional and translational capacity of the organism, and $\Phi_C = \rho\times(r_{max} - r_0) \approx 0.48$ , $\lambda(\Phi_U)$ is the growth rate with $\Phi_U$ in the proteome, and $\lambda(\Phi_U = 0)$ is the growth rate without unnecessary protein in the proteome.
 
 According to this theory, the growth reduction induced by heterologous protein expression is a simple consequence of proteome allocations. And more heterologous proteins, less growth rate. Our data of Fc and biomass corroborates this. In addition, considering mass fraction of the proteome in biomass is 55%-68%, then we could deduce theoretical maximal mass fraction of recombinant protein in biomass is 32.64% (Figure 6). 
 
@@ -326,29 +326,60 @@ write.table(Matrix,file="HNC47_redCost_distributions.tab",sep="\t",row.names=FAL
 
 ### 3.1 PCA analysis
 
-Analyzing the results of a genome-scale dynamic flux balance analysis presents a significant challenge since more than 2,000 variables (reaction fluxes) are available for each simulation. Principal Component Analysis (PCA) is a multivariate data analysis technique capable of making sense of such datasets. PCA is a projection method designed to display systemic variation and extract information from noise in a data matrix X by projecting points to a number of principal components. The information in many variables can be captured by a few principal components. Plots based on PCA show relationships between variables and between observations, indicating degree of correlation between variables. Before analysis, the input data is mean-centered and scaled to unit variance. Figure 1 shows such a plot visualizing differences between data points based on relative separation. One data point means a flux distribution with/without one amino acid supplementation during the induction phase, and color means different time points since the starting of the induction. Each amino acid is added according to its required amount for increased biomass and Fc production with constant feeding. There appears to be 2 major classes: one with gln adding and others. This indicates medium supplementation with gln would cause a significant difference in metabolic state compared to others. Therefore, it should be cautious when considering supplementing this amino acid, as it may cause unexpected product quality changes.
+Analyzing the results of a genome-scale dynamic flux balance analysis presents a significant challenge since more than 2,000 variables (reaction fluxes) are available for each simulation. Principal Component Analysis (PCA) is a multivariate data analysis technique capable of making sense of such datasets. PCA is a projection method designed to display systemic variation and extract information from noise in a data matrix X by projecting points to a number of principal components. The information in many variables can be captured by a few principal components. Plots based on PCA show relationships between variables and between observations, indicating degree of correlation between variables. Before analysis, the input data is mean-centered and scaled to unit variance. Following r codes could generate such a plot visualizing differences between data points based on relative separation. One data point means a flux distribution at a specific time point during the whole fermentation process. There appears to be 3 major classes, just corresponding to 3 phases of fermentation. Actually, we could apply this PCA analysis to a more complicated case, e.g., metabolic variations over cell-cultures with different amino acid supplementation. From a bioprocessing standpoint, to some degree, we merely hope to increase production, without perturbing cell culture state. Because a significant change in cellular metabolism will in theory lead to  potential changes in product quality attributes or undesirable side-consequences.
 
-The lack of significant change in cellular metabolism for other kinds of amino acids adding, in particular his, cys, trp, ser and asn compared to the control, is a positive finding for increasing process yield by amino acid adding. Even, the lack of notable metabolic difference is time-independent. From a bioprocessing standpoint, this is desirable as increasing production without perturbing cell culture state will in theory avoid potential changes in product quality attributes or undesirable side-consequences.
+```{r,fig.height = 6,fig.width = 6}
 
-Figure 7. Metabolic variations over cell-cultures with amino acid supplementation by principal component analysis (PCA)
+rawdata <- read.table("HNC47_flux_distributions.tab",header=TRUE,sep="\t");
+## excluding exchange reactions
+rawdata <- rawdata[-grep("EX_",as.character(rawdata[,1])),]
+#rawdata <- rawdata[-grep("Biomass",as.character(rawdata[,1])),]
+#rawdata <- rawdata[-grep("RecombinantProtein",as.character(rawdata[,1])),]
+flux_names <- as.character(rawdata[,1])
+flux_data <- rawdata[,6:ncol(rawdata)];
+
+## to compare the flux distributions along with fermetation time
+time_points = seq(4,ncol(rawdata)-5,4) # one point per one hour 
+flux_tmp = t(flux_data[,time_points])
+flux_tmp = flux_tmp[,apply(flux_tmp,2,var) != 0]
+# since more variables than samples, use prcomp instead
+flux.pr <- prcomp(flux_tmp,scale=TRUE)
+pr_matrix <- cbind(data.frame(flux.pr$x[,1:2]),time_points/4 )
+colnames(pr_matrix) <- c("PC1","PC2","Time")
+
+library(ggplot2)
+p = ggplot(pr_matrix,aes(x=PC1,y=PC2)) + geom_point(shape=23,aes(fill=Time)) + scale_fill_continuous(low="blue",high="red") 
+#p + geom_text(aes(label=aa),size=4,hjust=0,vjust=-1,alpha=0.4) + guides(fill=guide_legend(title="hrs"))
+# set legend text and title
+p + labs(fill = "hrs")
+
+```
 
 ### 3.2 Identify metabolic reactions that are shifted significantly
 
-A typical idea to determine intracellular flux changes significantly is described as follows. First, reaction fluxes are sampled for two conditions. Subsequently, sample of flux differences is calculated by selecting random flux values from each condition to obtain a distribution of flux differences for each reaction. Finally, standardized reaction Z-scores are determined, which represent how far the sampled flux differences deviates from a zero flux change, or the background. Reaction scores can be used in visualizing perturbation subnetworks and analyzing reporter metabolites and subsystems. For more details, please refer to 
+A typical idea to determine intracellular flux changes significantly is described as follows. First, reaction fluxes are sampled for two conditions. Subsequently, sample of flux differences is calculated by selecting random flux values from each condition to obtain a distribution of flux differences for each reaction. Finally, standardized reaction Z-scores are determined, which represent how far the sampled flux differences deviates from a zero flux change, or the background. Reaction scores can be used in visualizing perturbation subnetworks and analyzing reporter metabolites and subsystems. For more details, please refer to the workflow (https://github.com/Kange2014/FluxShift/blob/master/time_course_fluxShift.ipynb)
+
+This z-score-based analysis is carried out to determine the most significantly shifting fluxes between 50%glc and 25%glc + 10%YE feeding conditions. I select three different time points, 10h after batch (phase 1), and 5h, 10h after induction (phase 2, 3) for comparison. With YE replacement of 25%glc, majority of significantly shifting reactions are from glycolysis and TCA cycle, in particular for post-induction. Changes on other reactions in these two pathways although are not that significant, they also changed a lot, when compared to the background (Figure 7). Visualization of these perturbed reaction nodes brings about a striking commonality that many are NADH-producing reactions, such as GAPD, PDH, MDH, AKGDH, and those related to specific amino acid biosynthetic pathways (PGK to serine, ICDHyr to glutamate, MDH to aspartate).
+
+<div style="text-align: center">
+<img src="Z-score-sig-metabolism.jpg", width = "100%"/>
+<center>Figure 7. Genome-scale modeling revealed perturbations in glycolysis and TCA cycle activitity associated with changed feeding cultures after induction (phase 2). Escher is used for building, viewing, and visualizations of biological pathways</center>
+</div>
+<br />
 
 ### 3.3 PTM analysis
 
-In E. coli, both methylation and acetylation can occur on recombinant proteins. For the former, S-adenosylmethionine (SAM) is reported to be the only methy-donor and thus, its concentration and related enzymes, e.g., methyltransferases, will affect the status of protein methylation. It is also reported that S-adenosylhomocysteine (SAH) is a competitive inhibitor of the methyltransferases, therefore the SAM:SAH ratio dictates the activity of the transferases. And because homocysteine could be converted from SAH and to Met and then to SAM, circulating homocysteine levels correlate inversely with cellular SAM:SAH ratio, too. In addition, demethylation depends on both O2 and a-ketoglutarate. Among TCA cycle metabolites, a-ketoglutarate promotes demethylation, whereas other dicarboxylic acids, such as succinate and fumarate, are competitive inhibitors of the a-ketoglutarate-dependent demethylases. 
-	
+In *E. coli*, both methylation and acetylation can occur on recombinant proteins. For the former, S-adenosylmethionine (SAM) is reported to be the only methy-donor and thus, its concentration and related enzymes, e.g., methyltransferases, will affect the status of protein methylation. It is also reported that S-adenosylhomocysteine (SAH) is a competitive inhibitor of the methyltransferases, therefore the SAM:SAH ratio dictates the activity of the transferases. And because homocysteine could be converted from SAH and to Met and then to SAM, circulating homocysteine levels correlate inversely with cellular SAM:SAH ratio, too. In addition, demethylation depends on both O2 and a-ketoglutarate. Among TCA cycle metabolites, a-ketoglutarate promotes demethylation, whereas other dicarboxylic acids, such as succinate and fumarate, are competitive inhibitors of the a-ketoglutarate-dependent demethylases. 
+
 For the latter, acetylation, acetyl-coenzyme A (acetyl-CoA) is the acetyl donor for all acetylation modifications. There are two kinds of acetylation modifications:
 
-* N$\alpha$-acetylation: N-terminal acetyltransferases perform N$\alpha$-acetylation on the $\alpha$-amino group of the first amino acid residue of nascent polypeptides. As a common co-translational modification, Nα-acetylation controls protein synthesis, stability and localization of the vast majority of eukaryotic proteins and is an irreversible reaction. RimI, Riml and RimJ of E. coli are reported to be related to this kind of modification.
+* N$\alpha$-acetylation: N-terminal acetyltransferases perform N$\alpha$-acetylation on the $\alpha$-amino group of the first amino acid residue of nascent polypeptides. As a common co-translational modification, N$\alpha$-acetylation controls protein synthesis, stability and localization of the vast majority of eukaryotic proteins and is an irreversible reaction. RimI, Riml and RimJ of E. coli are reported to relate to this kind of modification.
 
-* N$\epsilon$-acetylation: both dynamic and reversible. By contrast, post-translational acetylation catalyses site-specific Nε-acetylation of the ε-amino group of lysine residues, which is a reversible reaction. The reversibility of N$\epsilon$-acetylation makes this post-translational modification especially favourable in the regulation of proteins in response to metabolic changes. Two mechanisms have been identified:  one is enzymatic, dependent on an acetyltransferase and acetyl-coenzyme A; the other is non-enzymatic and depends on the reactivity of acetyl phosphate. In Escherichia coli, YfiQ (also known as Pka, Pla and PatZ) is the only known KAT (lysine acetyltransferase), whereas the NAD+-dependent sirtuin CobB appears to be the sole or predominant KDAC (lysine deacetylase).
+* N$\epsilon$-acetylation: both dynamic and reversible. By contrast, post-translational acetylation catalyses site-specific Nε-acetylation of the $\epsilon$-amino group of lysine residues, which is a reversible reaction. The reversibility of N$\epsilon$-acetylation makes this post-translational modification especially favourable in the regulation of proteins in response to metabolic changes. Two mechanisms have been identified:  one is enzymatic, dependent on an acetyltransferase and acetyl-coenzyme A; the other is non-enzymatic and depends on the reactivity of acetyl phosphate. In *E. coli*, YfiQ (also known as Pka, Pla and PatZ) is the only known KAT (lysine acetyltransferase), whereas the NAD+-dependent sirtuin CobB appears to be the sole or predominant KDAC (lysine deacetylase).
 
-Metabolic flux analysis could provide some interesting insights to these two kinds of PTMs in E.coli. By summing all producing reaction fluxes for these relevant metabolites, the sum flux for each metabolite could be estimated. Table 1 shows the flux ratio of SAM:SAH with 25%glc+10%YE conditions undergoes 12.4 at phase 1 to 16.6 at phase 2, and finally to 18 at phase 3, while with 50%glc the corresponding values are 11.9, 14.4 and 17.9, respectively. It seems that with 25%glc+10%YE, relatively more SAM and less SAH are synthesized. High SAM:SAH ratio apparently indicates high methylation rate. Meanwhile, low levels of homocysteine are also observed with 25%glc+10%YE. Demethylation by a-ketoglutarate, in contrast, is less favored due to low turnover rates of a-ketoglutarate (Figure 4). Consequently, it sounds plausible to observe a relative high methylation status with YE supplement because both methylation and demethylation environments incline to it.
+Metabolic flux analysis could provide some interesting insights to these two kinds of PTMs in *E.coli*. By summing all producing reaction fluxes for these relevant metabolites, the sum flux for each metabolite could be estimated. Table 5 shows the flux ratio of SAM:SAH with 25%glc+10%YE conditions undergoes 12.4 at phase 1 to 16.6 at phase 2, and finally to 18 at phase 3, while with 50%glc the corresponding values are 11.9, 14.4 and 17.9, respectively. It seems that with 25%glc+10%YE, relatively more SAM and less SAH are synthesized. High SAM:SAH ratio apparently indicates high methylation rate. Meanwhile, low levels of homocysteine are also observed with 25%glc+10%YE. In addition, with YE, there may be another factor to further influence homocysteine levels. YE component vitamin B12 could induce a faster conversion from L-homocysteine to methionine by activating enzyme metH. Demethylation by a-ketoglutarate, in contrast, is less favored due to low turnover rates of a-ketoglutarate (Figure 8). Consequently, it sounds plausible to observe a relatively high methylation status with YE supplement because both methylation and demethylation environments incline to it. 
 	
-<center>Table 1. Cumulative producing fluxes for three key metabolites related to methylation in E. coli</center>
+<center>Table 5. Cumulative producing fluxes for three key metabolites related to methylation in E. coli</center>
 | metabolite |	25%glc_10%YE p1 | 25%glc_10%YE p2 | 25%glc_10%YE p3 | 50%glc p1 | 50%glc p2 | 50%glc p3 |
 |--------------------------:|------------:|------------:|------------:|------------:|------------:|------------:|
 | ahcys_c (SAH) | 4.30E-05 | 1.39E-05 | 1.03E-05 | 5.62E-05 | 2.27E-05 | 1.27E-05 |
@@ -356,14 +387,20 @@ Metabolic flux analysis could provide some interesting insights to these two kin
 | SAM:SAH | 12.4 | 16.6 | 18 | 11.9 | 14.4 | 17.9 |
 | hcys__L_c (homocysteine) | 0.010198546 | 0.003803588 | 0.002729702 | 0.019674748 | 0.0099403 | 0.006688996 |
 
-Previous metabolic flux analysis results have already shown that many significant shifting reactions are NADH-producing reactions. As a result, it is interesting to examine the cumulative producing flux of NADH, especially when we consider it also relates to protein acetylation levels. From Figure 4, it could be observed that both acetyl-CoA and NADH are produced less with 25%glc+10%YE condition. Low levels of acetyl-CoA indicates low level of acetylation, and low NADH means higher NAD+/NADH ratio. This NAD+/NADH ratio changes seem likely to regulate the protein acylation state, with deacylation occurring when the NAD+/NADH ratio is high and acetylation being favored when the NAD+/NADH ratio is low. Low acetylation and high deacylation with 25%glc+10%YE could explain why under this culture condition, less acetylation occurs on the recombinant protein Fc. In addition, non-enzymatic dependent acetyl phosphate doesn’t show significant difference between these two conditions (data not shown). However, it is still unclear which type of acetylation is preferred. More efforts are required to investigate it.
+Above metabolic flux analysis results have already shown that many significant shifting reactions are NADH-producing reactions. As a result, it is interesting to examine the cumulative producing flux of NADH, especially when we consider it also relates to protein acetylation levels. From Figure 8, it could be observed that both acetyl-CoA and NADH are produced less with 25%glc+10%YE condition. Low levels of acetyl-CoA indicates low level of acetylation, and low NADH means higher NAD+/NADH ratio. This NAD+/NADH ratio changes seem likely to regulate the protein acylation state, with deacylation occurring when the NAD+/NADH ratio is high and acetylation being favored when the NAD+/NADH ratio is low. Low acetylation and high deacylation with 25%glc+10%YE could explain why under this culture condition, less acetylation occurs on the recombinant protein Fc. In addition, non-enzymatic dependent acetyl phosphate doesn’t show significant difference between these two conditions (data not shown). However, it is still unclear which type of acetylation (N$\alpha$-acetylation or N$\epsilon$-acetylation) is preferred. More efforts are required to investigate it.
+
+<div style="text-align: center">
+<img src="Cumulative_flux_PTMs.jpg", width = "100%"/>
+<center>Cumulative producing fluxes for key metabolites related to methylation and acetylation in E. coli</center>
+</div>
+<br />
 
 ## 4. Reference
-1. O'Brien EJ, et al. Cell 2015, 161 (5), 971–987; 
+1. O'Brien EJ, et al. Cell 2015, 161 (5), 971-987; 
 2. King ZA, et al. Nucleic Acids Res 2015, 44 (D1); 
-3. Pramanik J, et al. Biotechnol. Bioeng. 1997, 56 (4), 398–421; 
-4. Meadows AL, et al. Metabolic Engineering 2010, 12 (2), 150–160; 
-5. Mahadevan R, et al. Biophysical Journal 2002, 83 (3), 1331–1340;
+3. Pramanik J, et al. Biotechnol. Bioeng. 1997, 56 (4), 398-421; 
+4. Meadows AL, et al. Metabolic Engineering 2010, 12 (2), 150-160; 
+5. Mahadevan R, et al. Biophysical Journal 2002, 83 (3), 1331-1340;
 6. Scott M, et al. Science 2010, 330(6007):1099-102.
 
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:

@@ -70,7 +70,7 @@ Prokka combined with other tools including Prodigal, Barrnap, Aragorn, Infernal 
 
 Others' study has shown that starting from the highly curated content of a closely related organism produces a more accurate model than the currently available automated methods. Therefore, gene sequences from Escherichia coli BL21(DE3), B str. REL606, K-12 MG1655, and W are used for identifying orthologs. Reciprocal blastp method is applied to identify best bidirectional hits and an e-value of 1e-10 cutoff is used for assigning orthologs. 3992 genes (96.78%) have orthologs. Remaining genes that are missing orthologs in the original models are deleted from the model for the HNC47 strain. Take BL21(DE3) as a basis, additional reaction content is added from B str. REL606, K-12 MG1655, and W. Compared to BL21(DE3), it misses 13 reactions, and adds 1 new reaction. Most missing reactions won't affect the model's growth, except the reaction of Alanineracemase, which belongs to the "Alanine and Aspartate Metabolism" subsystem and is catalyzed by gene dadX or alr. Considering dadX is cloned into the plasmid to maintain HNC47 strain's normal growth, dadX is recovered and the reaction is also remained. 
 
-(Co-)Orthologs between HNC47, BL21(DE3), B str. REL606, K-12 strain MG1655 and W strain are identified by Reciprocal BLAST (Bidirectional Best Hit) based Proteinortho with default parameters. The GEM is reconstructed based on these ortholog genes. For genes s0001, gltL, fucA, wbbJ, fucP, xapA, ompC, tynA, yedL, rbsD, vsr, lsrD and fliZ, they're not mapped to a genome annotation of BL21(DE3). So, in the building of our HNC47 GEM, the corresponding reactions are maintained. Considering dadX is cloned into the plasmid to maintain HNC47 strain’s normal growth, dadX is recovered and the reaction is also remained. Table 2 outlines the statistics of GEMs. Likewise, the major difference of new HNC47 GEM is the introduction of ybhE gene insertion, when compared to BL21(DE3). The new adding reaction aided by ybhE gene introduces an important process in the Pentose Phosphate Pathway, which promotes the generation of NADPH, pentoses as well as Ribose 5-phosphate, a precursor for the synthesis of nucleotides. Eventually, HNC47 metabolic model has 1350 genes involved in 2784 reactions with 1973 metabolites, as Table 2 shows. GSM files could be retrieved from "R:\\ERC\\NNRCC_ERC\\ERCPE\\Database\\HNC47\\Genome-scale model". SBML and JSON formats are provided. And in the R sybil package, it is suggested to use SBML format without fbc.
+(Co-)Orthologs between HNC47, BL21(DE3), B str. REL606, K-12 strain MG1655 and W strain are identified by Reciprocal BLAST (Bidirectional Best Hit) based Proteinortho with default parameters. The GEM is reconstructed based on these ortholog genes. For genes s0001, gltL, fucA, wbbJ, fucP, xapA, ompC, tynA, yedL, rbsD, vsr, lsrD and fliZ, they're not mapped to a genome annotation of BL21(DE3). So, in the building of our HNC47 GEM, the corresponding reactions are maintained. Considering dadX is cloned into the plasmid to maintain HNC47 strain's normal growth, dadX is recovered and the reaction is also remained. Table 2 outlines the statistics of GEMs. Likewise, the major difference of new HNC47 GEM is the introduction of ybhE gene insertion, when compared to BL21(DE3). The new adding reaction aided by ybhE gene introduces an important process in the Pentose Phosphate Pathway, which promotes the generation of NADPH, pentoses as well as Ribose 5-phosphate, a precursor for the synthesis of nucleotides. Eventually, HNC47 metabolic model has 1350 genes involved in 2784 reactions with 1973 metabolites, as Table 2 shows. GSM files could be retrieved from "R:\\ERC\\NNRCC_ERC\\ERCPE\\Database\\HNC47\\Genome-scale model". SBML and JSON formats are provided. And in the R sybil package, it is suggested to use SBML format without fbc.
 
 <center>Table 2. The statistics of E.coli GEMs</center>
 | Component (#) | BL21(DE3) AM946981.2 | B str. REL606 CP000819.1 | HNC47 | HNC41 |
@@ -89,7 +89,7 @@ In order to apply the model we first needed to determine strain-specific paramet
 <center>Figure 3. HNC47 maximum aerobic glucose uptake rate, determined from batch experiments as the growth rate (0.69 h-1 HNC47) divided by the biomass yield (0.547g DW/g glucose)</center>
 </div>
 <br />
-The model requires maximum glucose uptake rate specified for metabolic simulations of batch and fed-batch cultures to restrict the metabolic capacity for glucose utilization. It’s defined as the ratio of the growth rate to biomass yield in batch experiments (Figure 3). For aerobic batch cultures, we have determined this value to be 7 mmol/gDW/h for HNC47 and for other strains (Table 3). It seems surprised that the growth rate of HNC47 with Fc is a little higher than HNC47 without Fc plasmid. The reason still remains unclear.
+The model requires maximum glucose uptake rate specified for metabolic simulations of batch and fed-batch cultures to restrict the metabolic capacity for glucose utilization. It's defined as the ratio of the growth rate to biomass yield in batch experiments (Figure 3). For aerobic batch cultures, we have determined this value to be 7 mmol/gDW/h for HNC47 and for other strains (Table 3). It seems surprised that the growth rate of HNC47 with Fc is a little higher than HNC47 without Fc plasmid. The reason still remains unclear.
 
 <center>Table 3. Experimental determination of model parameters with batch cultivation on FDM + Glucose (10g/L)</center>
 | Strain           | Growth Rate (/h) | Glucose uptake rate (mmol/g DW/h) | Biomass yield rate (g DW/g glucose) | Oxygen uptake rate[^2] (mmol/g DW/h) |
@@ -140,7 +140,7 @@ The GAM reaction accounts for the energy (in the form of ATP) necessary to repli
 
 ####	2.5.3 Non-growth associated ATP maintenance (NGAM)
 
-In the constraint-based metabolic models, it also includes an ATP hydrolysis reaction ($1 ATP + 1 H2O \to 1 ADP + 1 Pi + 1 H+$), which represents NGAM requirements of the cell to maintain, e.g., turgor pressure. However, under different conditions that the cell faces different pressures, the value for this reaction rate should not be constant. For instance, for recombinant cells, additional expression of recombinant proteins would bring metabolic burden to the cell, which would increase the NGAM requirement of the cell. Therefore, it’s important to take this factor into account in our case. Pirt proposed a theory of constant maintenance energy in 1975, that is:
+In the constraint-based metabolic models, it also includes an ATP hydrolysis reaction ($1 ATP + 1 H2O \to 1 ADP + 1 Pi + 1 H+$), which represents NGAM requirements of the cell to maintain, e.g., turgor pressure. However, under different conditions that the cell faces different pressures, the value for this reaction rate should not be constant. For instance, for recombinant cells, additional expression of recombinant proteins would bring metabolic burden to the cell, which would increase the NGAM requirement of the cell. Therefore, it's important to take this factor into account in our case. Pirt proposed a theory of constant maintenance energy in 1975, that is:
 $$ q = \frac{\mu}{Y_G} + m1, $$
 where q is the specific rate of utilization of the energy source (glucose uptake rate in the model), $\mu$ is the specific growth rate, $Y_G$ is the maximal growth yield and m1 is the constant maintenance energy coefficient, which is independent of the growth rate. Moreover, by putting $q = \frac{\mu}{Y}$ where Y is the actual growth yield, we could obtain:
 
@@ -163,7 +163,7 @@ By computing the maintenance coefficient m1 for the host before induction and re
 <center>Figure 5. Maintenance coefficient for the recombinant E. coli growing on glucose as the limiting nutrient</center>
 </div>
 <br />
-```{r}
+```{r NGAM_calculating}
 # Convert m1 to non-growth associated maintenance (NGAM) energy
 library(sybil)
 library(sybilSBML)
@@ -218,7 +218,7 @@ Rather than original recombinant constraints parameters to adjust the resources 
 
 ### 2.6 Apply the model to defined and complex medium
 
-```{r}
+```{r dGSMEF}
 library(deSolve)
 
 ## Set the constraints
@@ -255,18 +255,18 @@ feedConcentrations = feedConcentrations/2;
 feedConcentrations = c(feedConcentrations,conc_aa_feeding);
 
 
-#Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,initBiomass = 0.0142,
-#				u_fix = 0.15,x_ind = 31.63,
-#				feedSubstrateRxns = feedSubstrateRxns,feedConcentrations = feedConcentrations,
-#				yield_rate = 0.6586, # 25% glucose + 10% YE
-#				ngam = 6.34,
-#				initRatio = 0.70,
-#				feedRate_ind = 2.8,
-#				timeStep = 0.25,nSteps = 180,
-#				rcd = TRUE,fld = TRUE);
+Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,initBiomass = 0.0142,
+				u_fix = 0.15,x_ind = 31.63,
+				feedSubstrateRxns = feedSubstrateRxns,feedConcentrations = feedConcentrations,
+				yield_rate = 0.6586, # 25% glucose + 10% YE
+				ngam = 6.34,
+				initRatio = 0.70,
+				feedRate_ind = 2.8,
+				timeStep = 0.25,nSteps = 180,
+				rcd = TRUE,fld = TRUE);
 ```
 
-```{r,fig.height = 6, fig.width = 6}
+```{r plotFigure,fig.height = 6, fig.width = 6}
 ## compare predictions with experimental results during induction phase
 locs <- Ec_df2@biomassVec >= 31.63
 ind_time = Ec_df2@timeVec[locs][1]
@@ -288,7 +288,7 @@ mtext("Recombinant protein(g/L)",side=4,cex=0.8);
 legend("bottomright", c("Biomass","Recombinant protein"), col=c(2,4), lty=1, pch=c(2,3),text.font = 1.2, cex = 0.6);
 ```
 
-```{r}
+```{r saveResults}
 ## save flux distributions
 Matrix <- matrix(Ec_df2@fluxMatrix,nrow=react_num(model),ncol=length(Ec_df2@timeVec),byrow = FALSE);
 subsystemsMatrix <- subSys(model);
@@ -328,7 +328,7 @@ write.table(Matrix,file="HNC47_redCost_distributions.tab",sep="\t",row.names=FAL
 
 Analyzing the results of a genome-scale dynamic flux balance analysis presents a significant challenge since more than 2,000 variables (reaction fluxes) are available for each simulation. Principal Component Analysis (PCA) is a multivariate data analysis technique capable of making sense of such datasets. PCA is a projection method designed to display systemic variation and extract information from noise in a data matrix X by projecting points to a number of principal components. The information in many variables can be captured by a few principal components. Plots based on PCA show relationships between variables and between observations, indicating degree of correlation between variables. Before analysis, the input data is mean-centered and scaled to unit variance. Following r codes could generate such a plot visualizing differences between data points based on relative separation. One data point means a flux distribution at a specific time point during the whole fermentation process. There appears to be 3 major classes, just corresponding to 3 phases of fermentation. Actually, we could apply this PCA analysis to a more complicated case, e.g., metabolic variations over cell-cultures with different amino acid supplementation. From a bioprocessing standpoint, to some degree, we merely hope to increase production, without perturbing cell culture state. Because a significant change in cellular metabolism will in theory lead to  potential changes in product quality attributes or undesirable side-consequences.
 
-```{r,fig.height = 6,fig.width = 6}
+```{r PCA,fig.height = 6,fig.width = 6}
 
 rawdata <- read.table("HNC47_flux_distributions.tab",header=TRUE,sep="\t");
 ## excluding exchange reactions
@@ -387,7 +387,7 @@ Metabolic flux analysis could provide some interesting insights to these two kin
 | SAM:SAH | 12.4 | 16.6 | 18 | 11.9 | 14.4 | 17.9 |
 | hcys__L_c (homocysteine) | 0.010198546 | 0.003803588 | 0.002729702 | 0.019674748 | 0.0099403 | 0.006688996 |
 
-Above metabolic flux analysis results have already shown that many significant shifting reactions are NADH-producing reactions. As a result, it is interesting to examine the cumulative producing flux of NADH, especially when we consider it also relates to protein acetylation levels. From Figure 8, it could be observed that both acetyl-CoA and NADH are produced less with 25%glc+10%YE condition. Low levels of acetyl-CoA indicates low level of acetylation, and low NADH means higher NAD+/NADH ratio. This NAD+/NADH ratio changes seem likely to regulate the protein acylation state, with deacylation occurring when the NAD+/NADH ratio is high and acetylation being favored when the NAD+/NADH ratio is low. Low acetylation and high deacylation with 25%glc+10%YE could explain why under this culture condition, less acetylation occurs on the recombinant protein Fc. In addition, non-enzymatic dependent acetyl phosphate doesn’t show significant difference between these two conditions (data not shown). However, it is still unclear which type of acetylation (N$\alpha$-acetylation or N$\epsilon$-acetylation) is preferred. More efforts are required to investigate it.
+Above metabolic flux analysis results have already shown that many significant shifting reactions are NADH-producing reactions. As a result, it is interesting to examine the cumulative producing flux of NADH, especially when we consider it also relates to protein acetylation levels. From Figure 8, it could be observed that both acetyl-CoA and NADH are produced less with 25%glc+10%YE condition. Low levels of acetyl-CoA indicates low level of acetylation, and low NADH means higher NAD+/NADH ratio. This NAD+/NADH ratio changes seem likely to regulate the protein acylation state, with deacylation occurring when the NAD+/NADH ratio is high and acetylation being favored when the NAD+/NADH ratio is low. Low acetylation and high deacylation with 25%glc+10%YE could explain why under this culture condition, less acetylation occurs on the recombinant protein Fc. In addition, non-enzymatic dependent acetyl phosphate doesn't show significant difference between these two conditions (data not shown). However, it is still unclear which type of acetylation (N$\alpha$-acetylation or N$\epsilon$-acetylation) is preferred. More efforts are required to investigate it.
 
 <div style="text-align: center">
 <img src="Cumulative_flux_PTMs.jpg", width = "100%"/>
@@ -402,6 +402,7 @@ Above metabolic flux analysis results have already shown that many significant s
 4. Meadows AL, et al. Metabolic Engineering 2010, 12 (2), 150-160; 
 5. Mahadevan R, et al. Biophysical Journal 2002, 83 (3), 1331-1340;
 6. Scott M, et al. Science 2010, 330(6007):1099-102.
+
 
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 

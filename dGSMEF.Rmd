@@ -101,7 +101,7 @@ The model requires maximum glucose uptake rate specified for metabolic simulatio
 
 ### 2.3 Batch biomass growth model
 
-FBA can be used to examine dynamic processes such as microbial growth in batch cultures by combining FBA with an iterative approach based on a quasi-steady-state assumption (static optimization–based dynamic FBA). The substrate concentration (Sc) (mmol/L) is determined from the substrate concentration predicted for the previous step (Sco ) or from the initial substrate concentration if it is the first time step:
+FBA can be used to examine dynamic processes such as microbial growth in batch cultures by combining FBA with an iterative approach based on a quasi-steady-state assumption (static optimization-based dynamic FBA). The substrate concentration (Sc) (mmol/L) is determined from the substrate concentration predicted for the previous step (Sco ) or from the initial substrate concentration if it is the first time step:
 $$ S_c = S_{co} $$
 The substrate concentration is scaled to define the amount of substrate available per unit of biomass per unit of time (mmol gDW-1h-1):
 $$ Substrate available = \frac{S_c}{X\Delta(t)} $$

@@ -8,7 +8,7 @@ dGSMEF(model, substrateRxns, initConcentrations, initBiomass, feedSubstrateRxns,
   feedConcentrations, initVolume = 0.1, initpH = 7.25, u_fix = 0.15,
   yield_rate = 0.6586, x_ind = 51.6, ngam = 11.36, initRatio = 0.8,
   feedRate_ind = 2.9, timeStep, nSteps, exclUptakeRxns, rcd = FALSE,
-  fld = FALSE, verboseMode = 2, ...)
+  fld = FALSE, verboseMode = 2)
 }
 \arguments{
 \item{model}{Sybil model structure (class \code{\link[sybil]{modelorg}}).}
@@ -31,6 +31,8 @@ structure as substrateRxns).}
 \item{initpH}{Initial pH in the bioreactor, default: 7.3.}
 
 \item{u_fix}{Fixed specific growth rate during fed-batch phase before induction.}
+
+\item{yield_rate}{Biomass yield rate on glucose, unit: g DW/g glucose.}
 
 \item{x_ind}{Biomass centration at induction.}
 
@@ -95,19 +97,26 @@ library(sybil)
 library(sybilSBML)
 library(glpkAPI)
 library(deSolve)
-model = readSBMLmod("C:\\\\Users\\\\luze\\\\Desktop\\\\COBRA\\\\Models\\\\HNC47_model_reconstruction\\\\New_model_building\\\\HNC47_without_fbc.xml");
+library(dGSMEF)
+model = readSBMLmod("../data/HNC47_without_fbc.xml");
 lowbnd(model)[react_id(model) == 'EX_glc__D(e)'] = -9.58; ## for HNC47 with Fc
 lowbnd(model)[react_id(model) == 'EX_o2(e)']=-11.5; # for HNC47 with Fc
 
 ## Add Fc synthesis reaction into the model
 model <- addReact(model,id="RecombinantProtein",
-			met=c('ala__L[c]','cys__L[c]','asp__L[c]','glu__L[c]','phe__L[c]','gly[c]','his__L[c]','ile__L[c]','lys__L[c]','leu__L[c]','met__L[c]','asn__L[c]',
-				'pro__L[c]','gln__L[c]','arg__L[c]','ser__L[c]','thr__L[c]','val__L[c]','trp__L[c]','tyr__L[c]','atp[c]','adp[c]','pi[c]'),
-			Scoef=c(-c(6,6,9,17,9,11,5,4,17,17,3,11,19,11,6,24,14,23,4,8),-4.306*224,964.544,965.544),
+			met=c('ala__L[c]','cys__L[c]','asp__L[c]','glu__L[c]','phe__L[c]',
+                   'gly[c]','his__L[c]','ile__L[c]','lys__L[c]','leu__L[c]',
+                   'met__L[c]','asn__L[c]','pro__L[c]','gln__L[c]','arg__L[c]',
+                   'ser__L[c]','thr__L[c]','val__L[c]','trp__L[c]','tyr__L[c]',
+                    'atp[c]','adp[c]','pi[c]'),
+			Scoef=c(-c(6,6,9,17,9,11,5,4,17,17,3,11,19,11,6,24,14,23,4,8),
+                     -4.306*224,964.544,965.544),
 			lb=0,ub=1000,obj=0);
 
 ## Define FDM recipe
-substrateRxns = c('EX_glc__D(e)','EX_nh4(e)','EX_pi(e)','EX_so4(e)','EX_mg2(e)','EX_k(e)','EX_ca2(e)','EX_cl(e)','EX_fe2(e)','EX_mn2(e)','EX_cu2(e)','EX_zn2(e)','EX_mobd(e)');
+substrateRxns = c('EX_glc__D(e)','EX_nh4(e)','EX_pi(e)','EX_so4(e)','EX_mg2(e)',
+                  'EX_k(e)','EX_ca2(e)','EX_cl(e)','EX_fe2(e)','EX_mn2(e)',
+                  'EX_cu2(e)','EX_zn2(e)','EX_mobd(e)');
 initConcentrations = c(55.56,2000,67.6,63.08,2,67.6,1000,1000,2000,0.09171,1000,0.05912,0.01078);
 
 ## EX_ni2(e) and EX_cobalt2(e) both are required to support the growth of cell
@@ -119,19 +128,23 @@ lowbnd(model)[react_id(model) == 'EX_sel(e)'] = 0;
 lowbnd(model)[react_id(model) == 'EX_slnt(e)'] = 0;
 
 ## 10\% YE + 25\% glucose for feeding during induction
-AA <- c('EX_ala__L(e)','EX_arg__L(e)','EX_asn__L(e)','EX_asp__L(e)','EX_cys__L(e)','EX_gln__L(e)','EX_glu__L(e)','EX_gly(e)',
-		'EX_his__L(e)','EX_ile__L(e)','EX_leu__L(e)','EX_lys__L(e)','EX_met__L(e)','EX_phe__L(e)','EX_pro__L(e)',
-		'EX_ser__L(e)','EX_thr__L(e)','EX_trp__L(e)','EX_tyr__L(e)','EX_val__L(e)')
+AA <- c('EX_ala__L(e)','EX_arg__L(e)','EX_asn__L(e)','EX_asp__L(e)','EX_cys__L(e)','EX_gln__L(e)',
+        'EX_glu__L(e)','EX_gly(e)','EX_his__L(e)','EX_ile__L(e)','EX_leu__L(e)','EX_lys__L(e)',
+        'EX_met__L(e)','EX_phe__L(e)','EX_pro__L(e)','EX_ser__L(e)','EX_thr__L(e)',
+         'EX_trp__L(e)','EX_tyr__L(e)','EX_val__L(e)')
 
-conc_aa_feeding <- 2.5*c(15.018,8.795,0.000,6.655,0.000,0.000,16.459,7.423,0.000,6.955,11.957,5.917,2.207,5.588,3.082,4.451,6.036,0.000,1.175,9.289)	
-feedSubstrateRxns = c('EX_glc__D(e)','EX_nh4(e)','EX_so4(e)','EX_mg2(e)','EX_fe2(e)','EX_mn2(e)','EX_cu2(e)','EX_zn2(e)','EX_mobd(e)',AA);
+conc_aa_feeding <- 2.5*c(15.018,8.795,0.000,6.655,0.000,0.000,16.459,7.423,0.000,6.955,
+                         11.957,5.917,2.207,5.588,3.082,4.451,6.036,0.000,1.175,9.289)	
+feedSubstrateRxns = c('EX_glc__D(e)','EX_nh4(e)','EX_so4(e)','EX_mg2(e)','EX_fe2(e)',
+                      'EX_mn2(e)','EX_cu2(e)','EX_zn2(e)','EX_mobd(e)',AA);
 feedConcentrations = c(2775.3,0.00924,40.23174,40,0.0719,0.09171,0.00881,0.05912,0.01078);
 feedConcentrations = feedConcentrations/2;
 feedConcentrations = c(feedConcentrations,conc_aa_feeding);
 
-Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,initBiomass=0.0142,
-				u_fix=0.15,x_ind= 31.63,
-				feedSubstrateRxns = feedSubstrateRxns,feedConcentrations = feedConcentrations,
+Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,
+                 initBiomass=0.0142,u_fix=0.15,x_ind= 31.63,
+				feedSubstrateRxns = feedSubstrateRxns,
+                 feedConcentrations = feedConcentrations,
 				yield_rate = 0.6586, # 25\% glucose + 10\% YE
 				ngam = 6.34,
 				initRatio = 0.70,
@@ -141,22 +154,28 @@ Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initCo
 ## compare predictions with experimental results during induction phase
 locs <- Ec_df2@biomassVec >= 31.63
 ind_time = Ec_df2@timeVec[locs][1]
-plot(spline(Ec_df2@timeVec[locs]-ind_time,Ec_df2@biomassVec[locs], n = 201, method = "natural"), col = 2,main='Concentrations',xlab='Time(hrs)',ylab="Biomass(g/L)",ylim = c(31,42),type="l",lwd=2);
+plot(spline(Ec_df2@timeVec[locs]-ind_time,Ec_df2@biomassVec[locs], n = 201, method = "natural"), 
+     col = 2,main='Concentrations',xlab='Time(hrs)',ylab="Biomass(g/L)",ylim = c(31,42),
+     type="l",lwd=2);
 
 ind_time = 0
-points(c(ind_time,ind_time+4,ind_time+8,ind_time+12,ind_time+16,ind_time+20),c(31.63,37.84164381,40.34110603,40.00462097,41.14031209,41.68691719),pch=2,col=2)
+points(c(ind_time,ind_time+4,ind_time+8,ind_time+12,ind_time+16,ind_time+20),
+       c(31.63,37.84164381,40.34110603,40.00462097,41.14031209,41.68691719),pch=2,col=2)
 
 par(new=T);	
 
 ind_time = Ec_df2@timeVec[locs][1]	
-plot(spline(Ec_df2@timeVec[locs]-ind_time, Ec_df2@concentrationMatrix[Ec_df2@excRxnNames \%in\% "Protein"][locs]*25163.41/1000, n = 201, method = "natural"),axes=F,col = 4,
-           xlab="",ylab="",type="l",lwd=2);
+plot(spline(Ec_df2@timeVec[locs]-ind_time, 
+            Ec_df2@concentrationMatrix[Ec_df2@excRxnNames \%in\% "Protein"][locs]*25163.41/1000, 
+            n = 201, method = "natural"),axes=F,col = 4,xlab="",ylab="",type="l",lwd=2);
 
 ind_time = 0
-points(c(ind_time,ind_time+4,ind_time+8,ind_time+12,ind_time+16,ind_time+20),c(0,2.198356194,5.63889397,8.805379035,10.99968791,12.85308281),pch=3,col=4)
+points(c(ind_time,ind_time+4,ind_time+8,ind_time+12,ind_time+16,ind_time+20),
+       c(0,2.198356194,5.63889397,8.805379035,10.99968791,12.85308281),pch=3,col=4)
 axis(4);
 mtext("Recombinant protein(g/L)",side=4,cex=0.8);
-legend("bottomright", c("Biomass","Recombinant protein"), col=c(2,4), lty=1, pch=c(2,3),text.font = 1.2, cex = 0.6);
+legend("bottomright", c("Biomass","Recombinant protein"), col=c(2,4), lty=1, 
+       pch=c(2,3),text.font = 1.2, cex = 0.6);
 }
 \seealso{
 \code{\link[sybil]{modelorg}}, \code{optsol_dGSMEF}.

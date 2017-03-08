@@ -1,0 +1,25 @@
+Package: dGSMEF
+Title: A dynamic genome-scale modelling of E. coli fermentation
+Version: 0.0.0.9000
+Authors@R: person("Lulu", "Zheng", email = "mingkanghust@gmail.com", role = c("aut", "cre"))
+Description: A dynamic genome-scale modelling of E. coli fermentation including batch,
+    fed-batch and induction phases for recombinant protein expression. It's implemented
+	with static optimization approach (SOA). First, the simulation time is divided into
+	small periods which are assumed to be in quasi-steady state; Second, for every time 
+	step, an flux balance analysis (FBA) problem is solved and the fluxes are integrated
+	over the time period and extracellular concentrations are calculated, accordingly.
+Depends: R (>= 3.2.3)
+License: GPL-v2
+Encoding: UTF-8
+LazyData: true
+Imports: deSolve,
+    glpkAPI,
+    sybil,
+    sybilSBML
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
+Collate: 
+    'dGSMEF.R'
+    'optsol_dGSMEF.R'

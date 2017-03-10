@@ -10,6 +10,10 @@
 #' @param redCost Object of class "matrix" containing the solutons flux distributions.
 #' @param Rxn Object of class "character" Vector of names of exchange reactions for the EC metabolites.
 #'
+#' @name optsol_dGSMEF-class
+#' @rdname optsol_dGSMEF-class
+#' @exportClass optsol_dGSMEF
+#'
 #' @seealso \code{dGSMEF}
 #'
 #' @examples
@@ -29,9 +33,10 @@ setClass("optsol_dGSMEF",
 
 #showClass("optsol_dGSMEF")
 
-#-------------------------------------------------------------------------------#
-# Constructor
-# optsol_dGSMEFClass
+#' Constructor method for optsol_dGSMEF class
+#'
+#' @name optsol_dGSMEF
+#' @rdname optsol_dGSMEF-class
 optsol_dGSMEF <- function(concmat,exRxn,tmVec,bmVec,flux,redCost,Rxn) {
     if (missing(concmat) || 
         missing(exRxn) ||
@@ -55,29 +60,18 @@ optsol_dGSMEF <- function(concmat,exRxn,tmVec,bmVec,flux,redCost,Rxn) {
 		)
 }
 
-#' plot
+#' @name optsol_dGSMEF-class
+#' @rdname optsol_dGSMEF-class
 #'
-#' @describeIn plot signature(x = "optsol_dGSMEF", y = missing"):
-#' \itemize{
-#' \item x: An object of class \code{optsol_dGSMEF}.  
-#' \item y: not used but kept for compitability with generic plot.
-#' \item plotRxns: List of reaction id's to be ploted.
-#' }
+#' @param x An object of class \code{optsol_dGSMEF}.  
+#' @param y not used but kept for compitability with generic plot.
+#' @param plotRxns List of reaction id's to be ploted (metabolite concentrations).
+#' @param plotFlux List of reaction id's to be ploted (reaction fluxes).
+#'
+#' @exportMethod plot
 
 setMethod("plot", signature("optsol_dGSMEF","missing"),
-          function(x,y,
-                   ylim=50,
-                   xlab = "",
-                   ylab = "Value",
-                   type = "p",
-                   pch = 20,
-                   col = "black",             
-    #               collower, colupper, pchupper, pchlower,
-    #               dottedline = TRUE,
-                   plotRxns=NULL,
-				   plotFlux=NULL,
-                   baseline = 0,
-                    ...) {
+          function(x,y,plotRxns=NULL,plotFlux=NULL) {
                 if(missing(plotRxns) && missing(plotFlux)){
                    plot(spline(x@timeVec,x@biomassVec, n = 201, method = "natural"), col = 1
 			                    ,main='Cell density',xlab='Time(hrs)',ylab="X(g/L)",type="l",lwd=2);

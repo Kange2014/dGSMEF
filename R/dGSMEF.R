@@ -17,6 +17,10 @@
 #' by heterologous protein expression is a simple consequence of proteome
 #' allocations. And more heterologous proteins, less growth rate.
 #'
+#' @import sybil
+#' @import sybil
+#' @importFrom deSolve ode
+#'
 #' @param model Sybil model structure (class \code{\link[sybil]{modelorg}}).
 #' @param substrateRxns List of exchange reaction names for substrates
 #'                       initially in the media that may change (e.g. not
@@ -61,7 +65,10 @@
 #'
 #' @seealso \code{\link[sybil]{modelorg}}, \code{optsol_dGSMEF}.
 #'
+#' @export
+#'
 #' @examples
+#' \dontrun{
 #' library(sybil)
 #' library(sybilSBML)
 #' library(glpkAPI)
@@ -145,6 +152,7 @@
 #' mtext("Recombinant protein(g/L)",side=4,cex=0.8);
 #' legend("bottomright", c("Biomass","Recombinant protein"), col=c(2,4), lty=1, 
 #'        pch=c(2,3),text.font = 1.2, cex = 0.6);
+#' }
 
 dGSMEF <- function (model,substrateRxns,initConcentrations,initBiomass,
 						feedSubstrateRxns,feedConcentrations,initVolume = 0.1, initpH = 7.25,

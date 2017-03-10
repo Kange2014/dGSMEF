@@ -9,17 +9,16 @@ Description: A dynamic genome-scale modelling of E. coli fermentation including 
 	step, an flux balance analysis (FBA) problem is solved and the fluxes are integrated
 	over the time period and extracellular concentrations are calculated, accordingly.
 Depends: R (>= 3.2.3)
-License: GPL-v2
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Imports: deSolve,
-    glpkAPI,
-    sybil,
-    sybilSBML
-Suggests: knitr,
-    rmarkdown
+    sybil
+Suggests: glpkAPI,
+    sybilSBML,
+    knitr
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Collate: 
+Collate:
     'dGSMEF.R'
     'optsol_dGSMEF.R'

@@ -62,7 +62,7 @@ concentrations do not change (Default =
 Default: 2.}
 }
 \value{
-returns class \code{optsol_dGSMEF}  
+returns class \code{\link{optsol_dGSMEF}}  
 \itemize{
 \item concentrationMatrix:    Matrix of extracellular metabolite concentrations.
 \item excRxnNames:            Names of exchange reactions for the EC metabolites.
@@ -180,5 +180,5 @@ legend("bottomright", c("Biomass","Recombinant protein"), col=c(2,4), lty=1,
 }
 }
 \seealso{
-\code{\link[sybil]{modelorg}}, \code{optsol_dGSMEF}.
+\code{\link[sybil]{modelorg}}, \code{\link{optsol_dGSMEF}}.
 }

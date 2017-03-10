@@ -52,7 +52,7 @@
 #'						3: a table containing the reaction id's and the corresponding min max values.
 #'						Default: 2.
 #'
-#' @return  returns class \code{optsol_dGSMEF}  
+#' @return  returns class \code{\link{optsol_dGSMEF}}  
 #' \itemize{
 #' \item concentrationMatrix:    Matrix of extracellular metabolite concentrations.
 #' \item excRxnNames:            Names of exchange reactions for the EC metabolites.
@@ -63,7 +63,7 @@
 #' \item RxnNames:               Names of all reactions for the E.Coli metabolites.
 #' }
 #'
-#' @seealso \code{\link[sybil]{modelorg}}, \code{optsol_dGSMEF}.
+#' @seealso \code{\link[sybil]{modelorg}}, \code{\link{optsol_dGSMEF}}.
 #'
 #' @export
 #'

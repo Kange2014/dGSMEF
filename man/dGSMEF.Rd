@@ -93,6 +93,7 @@ by heterologous protein expression is a simple consequence of proteome
 allocations. And more heterologous proteins, less growth rate.
 }
 \examples{
+\dontrun{
 library(sybil)
 library(sybilSBML)
 library(glpkAPI)
@@ -176,6 +177,7 @@ axis(4);
 mtext("Recombinant protein(g/L)",side=4,cex=0.8);
 legend("bottomright", c("Biomass","Recombinant protein"), col=c(2,4), lty=1, 
        pch=c(2,3),text.font = 1.2, cex = 0.6);
+}
 }
 \seealso{
 \code{\link[sybil]{modelorg}}, \code{optsol_dGSMEF}.

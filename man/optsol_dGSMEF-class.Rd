@@ -3,7 +3,15 @@
 \docType{class}
 \name{optsol_dGSMEF-class}
 \alias{optsol_dGSMEF-class}
+\alias{optsol_dGSMEF}
+\alias{optsol_dGSMEF-class}
 \title{Class "optsol_dGSMEF"}
+\usage{
+optsol_dGSMEF(concmat, exRxn, tmVec, bmVec, flux, redCost, Rxn)
+
+\S4method{plot}{optsol_dGSMEF,missing}(x, y, plotRxns = NULL,
+  plotFlux = NULL)
+}
 \arguments{
 \item{concmat}{Object of class "matrix" containing concentrations of extracellular metabolite and recombinant protein.}
 
@@ -18,9 +26,19 @@
 \item{redCost}{Object of class "matrix" containing the solutons flux distributions.}
 
 \item{Rxn}{Object of class "character" Vector of names of exchange reactions for the EC metabolites.}
+
+\item{x}{An object of class \code{optsol_dGSMEF}.}
+
+\item{y}{not used but kept for compitability with generic plot.}
+
+\item{plotRxns}{List of reaction id's to be ploted (metabolite concentrations).}
+
+\item{plotFlux}{List of reaction id's to be ploted (reaction fluxes).}
 }
 \description{
 Structure of class \code{optsol_dGSMEF}. Objects of that class are returned by the function \code{dGSMEF}.
+
+Constructor method for optsol_dGSMEF class
 }
 \examples{
 showClass("optsol_dGSMEF")

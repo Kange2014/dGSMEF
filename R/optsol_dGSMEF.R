@@ -1,6 +1,6 @@
 #' Class "optsol_dGSMEF"  
 #'
-#' Structure of class \code{optsol_dGSMEF}. Objects of that class are returned by the function \code{dGSMEF}. 
+#' Structure of class \code{optsol_dGSMEF}. Objects of that class are returned by the function \code{\link{dGSMEF}}. 
 #'
 #' @param concmat Object of class "matrix" containing concentrations of extracellular metabolite and recombinant protein.
 #' @param exRxn Object of class "matrix" containing names of exchange reactions for the EC metabolites.
@@ -14,7 +14,7 @@
 #' @rdname optsol_dGSMEF-class
 #' @exportClass optsol_dGSMEF
 #'
-#' @seealso \code{dGSMEF}
+#' @seealso \code{\link{dGSMEF}}
 #'
 #' @examples
 #' showClass("optsol_dGSMEF")

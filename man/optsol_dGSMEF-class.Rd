@@ -36,7 +36,7 @@ optsol_dGSMEF(concmat, exRxn, tmVec, bmVec, flux, redCost, Rxn)
 \item{plotFlux}{List of reaction id's to be ploted (reaction fluxes).}
 }
 \description{
-Structure of class \code{optsol_dGSMEF}. Objects of that class are returned by the function \code{dGSMEF}.
+Structure of class \code{optsol_dGSMEF}. Objects of that class are returned by the function \code{\link{dGSMEF}}.
 
 Constructor method for optsol_dGSMEF class
 }
@@ -44,5 +44,5 @@ Constructor method for optsol_dGSMEF class
 showClass("optsol_dGSMEF")
 }
 \seealso{
-\code{dGSMEF}
+\code{\link{dGSMEF}}
 }

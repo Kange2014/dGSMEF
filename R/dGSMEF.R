@@ -89,7 +89,7 @@
 #'                      -4.306*224,964.544,965.544),
 #'				lb=0,ub=1000,obj=0);
 #'
-#' ## Define FDM recipe
+#' ## Define FDM recipe, while we suppose NH4,Ca2+,cl-, fe2+, and cu2+ are abundant enough
 #' substrateRxns = c('EX_glc__D(e)','EX_nh4(e)','EX_pi(e)','EX_so4(e)','EX_mg2(e)',
 #'                   'EX_k(e)','EX_ca2(e)','EX_cl(e)','EX_fe2(e)','EX_mn2(e)',
 #'                   'EX_cu2(e)','EX_zn2(e)','EX_mobd(e)');
@@ -104,28 +104,33 @@
 #' lowbnd(model)[react_id(model) == 'EX_slnt(e)'] = 0;
 #'
 #' ## 10% YE + 25% glucose for feeding during induction
+#' ## here, suppose YE is merely composed of amino acids
 #' AA <- c('EX_ala__L(e)','EX_arg__L(e)','EX_asn__L(e)','EX_asp__L(e)','EX_cys__L(e)','EX_gln__L(e)',
 #'         'EX_glu__L(e)','EX_gly(e)','EX_his__L(e)','EX_ile__L(e)','EX_leu__L(e)','EX_lys__L(e)',
 #'         'EX_met__L(e)','EX_phe__L(e)','EX_pro__L(e)','EX_ser__L(e)','EX_thr__L(e)',
 #'          'EX_trp__L(e)','EX_tyr__L(e)','EX_val__L(e)')
 #'
 #' conc_aa_feeding <- 2.5*c(15.018,8.795,0.000,6.655,0.000,0.000,16.459,7.423,0.000,6.955,
-#'                          11.957,5.917,2.207,5.588,3.082,4.451,6.036,0.000,1.175,9.289)	
+#'                          11.957,5.917,2.207,5.588,3.082,4.451,6.036,0.000,1.175,9.289)
+#'
+#' ## Define feeding component concentrations,
+#' ## where suppose O2 is always ample during the whole fermentation process
 #' feedSubstrateRxns = c('EX_glc__D(e)','EX_nh4(e)','EX_so4(e)','EX_mg2(e)','EX_fe2(e)',
 #'                       'EX_mn2(e)','EX_cu2(e)','EX_zn2(e)','EX_mobd(e)',AA);
 #' feedConcentrations = c(2775.3,0.00924,40.23174,40,0.0719,0.09171,0.00881,0.05912,0.01078);
 #' feedConcentrations = feedConcentrations/2;
 #' feedConcentrations = c(feedConcentrations,conc_aa_feeding);
 #'
+#' ## This step runs dGSMEF, and will take a long time
 #' Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,
 #'                  initBiomass=0.0142,u_fix=0.15,x_ind= 31.63,
 #'					feedSubstrateRxns = feedSubstrateRxns,
 #'                  feedConcentrations = feedConcentrations,
-#'					yield_rate = 0.6586, # 25% glucose + 10% YE
+#'					yield_rate = 0.6586,
 #'					ngam = 6.34,
 #'					initRatio = 0.70,
 #'					feedRate_ind = 2.8,
-#'					timeStep=0.25,nSteps=180,fld=TRUE);
+#'					timeStep=0.25,nSteps=180,rcd=FALSE,fld=TRUE);
 #'
 #' ## compare predictions with experimental results during induction phase
 #' locs <- Ec_df2@biomassVec >= 31.63

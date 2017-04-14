@@ -84,9 +84,9 @@
 #'                    'gly[c]','his__L[c]','ile__L[c]','lys__L[c]','leu__L[c]',
 #'                    'met__L[c]','asn__L[c]','pro__L[c]','gln__L[c]','arg__L[c]',
 #'                    'ser__L[c]','thr__L[c]','val__L[c]','trp__L[c]','tyr__L[c]',
-#'                     'atp[c]','adp[c]','pi[c]'),
+#'                    'atp[c]','adp[c]','pi[c]'),
 #'				Scoef=c(-c(6,6,9,17,9,11,5,4,17,17,3,11,19,11,6,24,14,23,4,8),
-#'                      -4.306*224,964.544,965.544),
+#'                      -4.306*224,964.544,964.544),
 #'				lb=0,ub=1000,obj=0);
 #'
 #' ## Define FDM recipe, while we suppose NH4,Ca2+,cl-, fe2+, and cu2+ are abundant enough
@@ -108,7 +108,7 @@
 #' AA <- c('EX_ala__L(e)','EX_arg__L(e)','EX_asn__L(e)','EX_asp__L(e)','EX_cys__L(e)','EX_gln__L(e)',
 #'         'EX_glu__L(e)','EX_gly(e)','EX_his__L(e)','EX_ile__L(e)','EX_leu__L(e)','EX_lys__L(e)',
 #'         'EX_met__L(e)','EX_phe__L(e)','EX_pro__L(e)','EX_ser__L(e)','EX_thr__L(e)',
-#'          'EX_trp__L(e)','EX_tyr__L(e)','EX_val__L(e)')
+#'         'EX_trp__L(e)','EX_tyr__L(e)','EX_val__L(e)')
 #'
 #' conc_aa_feeding <- 2.5*c(15.018,8.795,0.000,6.655,0.000,0.000,16.459,7.423,0.000,6.955,
 #'                          11.957,5.917,2.207,5.588,3.082,4.451,6.036,0.000,1.175,9.289)
@@ -123,9 +123,9 @@
 #'
 #' ## This step runs dGSMEF, and will take a long time
 #' Ec_df2 <- dGSMEF(model,substrateRxns = substrateRxns,initConcentrations = initConcentrations,
-#'                  initBiomass=0.0142,u_fix=0.15,x_ind= 31.63,
+#'					initBiomass=0.0142,u_fix=0.15,x_ind= 31.63,
 #'					feedSubstrateRxns = feedSubstrateRxns,
-#'                  feedConcentrations = feedConcentrations,
+#'					feedConcentrations = feedConcentrations,
 #'					yield_rate = 0.6586,
 #'					ngam = 6.34,
 #'					initRatio = 0.70,

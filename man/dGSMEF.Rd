@@ -5,7 +5,7 @@
 \title{A dynamic genome-scale modelling of E. Coli fermentation (dGSMEF)}
 \usage{
 dGSMEF(model, substrateRxns, initConcentrations, initBiomass, feedSubstrateRxns,
-  feedConcentrations, initVolume = 0.1, initpH = 7.25, u_fix = 0.15,
+  feedConcentrations, initVolume = 1, initpH = 7.25, u_fix = 0.15,
   yield_rate = 0.6586, x_ind = 51.6, ngam = 11.36, initRatio = 0.8,
   feedRate_ind = 2.9, timeStep, nSteps, exclUptakeRxns, rcd = FALSE,
   fld = FALSE, verboseMode = 2)

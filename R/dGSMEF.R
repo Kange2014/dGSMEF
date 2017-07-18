@@ -160,7 +160,7 @@
 #' }
 
 dGSMEF <- function (model,substrateRxns,initConcentrations,initBiomass,
-						feedSubstrateRxns,feedConcentrations,initVolume = 0.1, initpH = 7.25,
+						feedSubstrateRxns,feedConcentrations,initVolume = 1, initpH = 7.25,
 						u_fix = 0.15,
 						yield_rate = 0.6586, ## 25% glucose + 10%YE
 						x_ind = 51.6,
@@ -280,9 +280,7 @@ fluxMatrix = rep(0,length(react_id(model)));
 redCostMatrix = rep(0,length(react_id(model)));
 
 ##-----------------------------------------------------------------------------##
- if (verboseMode > 2) print('Step number    Biomass\n');
-# Inititialize progress bar ...');
-#if (verboseMode == 2)  progr <- .progressBar();
+if (verboseMode > 2) print('Step number    Biomass\n');
 
 ##-----------------------------------------------------------------------------##
 # define ODE for each process variable under batch phase 
@@ -308,7 +306,7 @@ batch_bioreactor <- function(t,state,parameters){
 	})
 }
 
-# define ODE for each process variable under batch phase
+# define ODE for each process variable under fed-batch phase
 fedbatch_bioreactor <- function(t,state,parameters){
 	with(as.list(c(state, parameters)), {
 		### define glucose feeding rates according to biomass concentration in the bioreactor
@@ -426,7 +424,10 @@ mass_aa <- c(89.09,174.2,132.12,133.1,121.16,146.15,147.13,75.07,155.16,131.17,1
 #
 # define a flag, indicating whether glucose is consumed out in the batch phase
 C_glc_flag = 0;
-i = 0; ### indicate feed_batch phase is coming after the transition from batch phase
+# indicate feed_batch phase is coming after the transition from batch phase
+i = 0; 
+# get the timepoint of induction beginning
+ind_time = nSteps;
 for (stepNo in 1:nSteps){
 	
 	##-----------------------------------------------------------------------------##
@@ -481,11 +482,11 @@ for (stepNo in 1:nSteps){
 	# run FBA
 	
 	## inducing protein expression when biomass grows to the predefined cut-off
-	if(biomass >= x_ind) {
+	if(biomass >= x_ind || stepNo > ind_time) {
+		ind_time = stepNo;
 		
 		## non-growth rate dependent energy requirement is changed from the host to the recombinant cell
-		lowbnd(model)[react_id(model) == 'ATPM'] = ngam; ## 32.075 for MIC-1
-		#lowbnd(model)[react_id(model) == 'ATPM'] = 11.36; ## for Fc
+		lowbnd(model)[react_id(model) == 'ATPM'] = ngam;
 		
 		## proteome resource allocation model
 		# Run FBA first to get growth rate without recombinant proteins
@@ -497,13 +498,14 @@ for (stepNo in 1:nSteps){
 		recomb_pro_mass = protein*(sum(mets_aa_coeff*mass_aa) - (sum(mets_aa_coeff) - 1)*18.01524)/1000;
 		biomass_pro_mass = biomass*(abs(sum(core_biomass_coefficients[aaInds]*mass_aa)))/1000;
 		proteome_mass = biomass_pro_mass + recomb_pro_mass;
-		fixed_pro = biomass_pro_mass*0.48/proteome_mass;
+		#fixed_pro = biomass_pro_mass*0.48/proteome_mass;
 		fixed_pro = 0.48;
 		u = u_max*(1 - recomb_pro_mass/proteome_mass/fixed_pro);
 		if(u > initRatio*u_max){ u = initRatio*u_max; }
 		
 		if(u <= 0){
-			return('Cells stop to growth -- recombinant protein proportion exceeds the limit\n');
+			print('Cells stop to growth -- recombinant protein proportion exceeds the limit\n');
+			break;
 		}
 		
 		# set the growth rate to u
@@ -513,7 +515,6 @@ for (stepNo in 1:nSteps){
 		# change the objective to recombinant protein synthesis
 		model = changeObjFunc(model,c('BIOMASS_Ec_iJO1366_core_53p95M','RecombinantProtein'),c(0,1));
 	}
-	
 	
 	sol = sybil::optimizeProb(model,algorithm="fba",retOptSol=TRUE,poCmd = list("getRedCosts"));
 
@@ -626,23 +627,16 @@ for (stepNo in 1:nSteps){
 		### and also transfer unit g to mol: 180.16g/mol for glucose
 		
 		if(i == 1) {
-			if(!any(react_id(model) == "PGL")){
-				uptakeBound[react_id(model) == feedSubstrateRxns[1] ] = u_fix/0.418/180.16*1000*biomass*timeStep/(biomass*timeStep);
-			}
-			else{
-				#uptakeBound[react_id(model) == feedSubstrateRxns[1] ] = u_fix/0.547/180.16*1000*biomass*timeStep/(biomass*timeStep); #HNC47
-				#uptakeBound[react_id(model) == feedSubstrateRxns[1] ] = u_fix/0.4413/180.16*1000*biomass*timeStep/(biomass*timeStep); # HNC47 with Fc
-				uptakeBound[react_id(model) == feedSubstrateRxns[1] ] = u_fix/yield_rate/180.16*1000*biomass*timeStep/(biomass*timeStep); # HNC47 with Fc with 25% glucose + 10% YE
-			}
+			uptakeBound[react_id(model) == feedSubstrateRxns[1] ] = u_fix/yield_rate/180.16*1000*biomass*timeStep/(biomass*timeStep);
 			init_feed_rate = uptakeBound[react_id(model) == feedSubstrateRxns[1] ]*biomass*V/feedConcentrations[GlucoseInd]*1000;
-			print(paste("Initial feed rate: ", init_feed_rate," ml/h"));
+			print(paste("Initial feeding rate: ", init_feed_rate," ml/h"));
 		}
 		### init feeding rate: 0.36 ml/h
 		#if(i == 1) {uptakeBound[react_id(model) == feedSubstrateRxns[GlucoseInd] ] = 0.36/1000*feedConcentrations[GlucoseInd]/(biomass*V); }
 		
 		## inducing protein expression when biomass grows to the predefined cut-off
 		## feeding rate: 2.9ml/h
-		else if (biomass >= x_ind){
+		else if (biomass >= x_ind || stepNo > ind_time){
 			print(paste("Feeding rate at induction: ",feedRate_ind))
 			uptakeBound[react_id(model) == feedSubstrateRxns[GlucoseInd]] = feedRate_ind/1000*feedConcentrations[GlucoseInd]/(biomass*V);
 		}
